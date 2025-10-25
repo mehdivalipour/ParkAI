@@ -1,0 +1,1411 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>دستیار هوشمند سازمانی</title>
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+    
+    <!-- Vazirmatn Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* اعمال فونت وزیرمتن و تایپوگرافی فشرده */
+        body, input, button, textarea, select {
+            font-family: 'Vazirmatn', sans-serif;
+            font-size: 13px; /* فونت پایه کوچک‌تر */
+        }
+        h1, h2, h3, h4, h5, h6 {
+            font-weight: 600;
+        }
+        .text-sm { font-size: 13px; }
+        .text-xs { font-size: 11px; }
+
+        /* انیمیشن محو شدن */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .fade-in { animation: fadeIn 0.4s ease-out forwards; }
+
+        /* استایل سفارشی نوار اسکرول */
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: #000; }
+        ::-webkit-scrollbar-thumb { background-color: #4b5563; border-radius: 6px; }
+        ::-webkit-scrollbar-thumb:hover { background-color: #6b7280; }
+        
+        /* محدود کردن ارتفاع نمودارها */
+        canvas { max-height: 250px; } /* فشرده‌تر */
+
+        /* استایل منوی فعال سایدبار (مینیمال) */
+        .sidebar-link.active {
+            background-color: #1f2937; /* gray-800 */
+            color: #14b8a6; /* brand-highlight */
+        }
+        .sidebar-link.active-light {
+             background-color: #e5e7eb; /* gray-200 */
+             color: #0d9488; /* teal-600 */
+        }
+        
+/* ... existing code ... -->
+        .dark .filter-btn.active {
+            background-color: #f3f4f6; /* gray-100 */
+            color: #111827; /* gray-900 */
+        }
+        
+        /* شبیه‌سازی نقشه حرارتی */
+        .heatmap-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 2px;
+        }
+        .heatmap-cell {
+            width: 100%;
+            padding-bottom: 100%; /* Aspect ratio 1:1 */
+            border-radius: 2px;
+        }
+        
+    </style>
+    
+    <script>
+        // پیکربندی سفارشی Tailwind (استایل مینیمال)
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: { 'vazir': ['Vazirmatn', 'sans-serif'] },
+                    colors: {
+                        'brand-dark': '#0f172a', // slate-900
+                        'brand-light': '#f1f5f9', // slate-100
+                        'brand-card-dark': '#030712', // gray-950
+                        'brand-card-light': '#ffffff',
+                        'brand-highlight': '#14b8a6', // teal-500
+                        'brand-highlight-dark': '#0d9488', // teal-600
+                    },
+                    borderRadius: { 'lg': '8px' }, // 8px
+                    spacing: {
+                        '3': '12px',
+                        '4': '16px',
+                        '5': '20px',
+                        '6': '24px',
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-brand-light dark:bg-black text-gray-900 dark:text-gray-200 font-vazir text-sm transition-colors duration-300">
+
+    <!-- 
+      =================================
+      VIEW 1: صفحه ورود (Login View)
+      =================================
+    -->
+    <div id="loginView" class="flex items-center justify-center min-h-screen bg-brand-light dark:bg-black p-4">
+        <div class="w-full max-w-sm bg-brand-card-light dark:bg-brand-card-dark shadow-xl dark:shadow-2xl dark:shadow-gray-900 rounded-lg p-8 border border-gray-200 dark:border-gray-800">
+            <!-- لوگوی مینیمال -->
+            <svg class="w-12 h-12 mx-auto mb-4 text-brand-highlight" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M12 19a7 7 0 100-14 7 7 0 000 14z"></path></svg>
+            
+            <h1 class="text-xl font-bold text-center text-gray-900 dark:text-white mb-2 fade-in">
+                دستیار هوشمند سازمانی
+            </h1>
+            <p class="text-xs text-center text-gray-500 dark:text-gray-400 mb-6 fade-in" style="animation-delay: 100ms;">ورود به پارک علم و فناوری</p>
+            
+            <form class="space-y-4 fade-in" style="animation-delay: 200ms;" onsubmit="return false;">
+                <div>
+                    <label for="username" class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">نام کاربری</label>
+                    <input type="text" id="username" value="demo" class="w-full p-2.5 text-sm bg-gray-100 dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-lg focus:outline-none focus:ring-1 focus:ring-brand-highlight dark:placeholder-gray-500" placeholder="نام کاربری سازمانی">
+                </div>
+                <div>
+                    <label for="password" class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">رمز عبور</label>
+                    <input type="password" id="password" value="demo" class="w-full p-2.5 text-sm bg-gray-100 dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-lg focus:outline-none focus:ring-1 focus:ring-brand-highlight" placeholder="••••••••">
+                </div>
+                
+                <div class="grid grid-cols-2 gap-3 pt-4">
+                    <button id="loginAdminBtn" data-role="admin" class="btn-primary login-btn w-full">من مدیر هستم</button>
+                    <button id="loginEmployeeBtn" data-role="employee" class="btn-primary login-btn w-full">من کارمند هستم</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- 
+      =================================
+      VIEW 2: اپلیکیشن اصلی (Main App View)
+      =================================
+    -->
+    <div id="mainAppView" class="hidden flex h-screen overflow-hidden">
+        
+        <!-- سایدبار (منوی کناری) - ثابت در سمت راست -->
+        <aside class="w-56 bg-white dark:bg-black border-l border-gray-200 dark:border-gray-800 flex flex-col flex-shrink-0 transition-colors duration-300">
+            <!-- لوگو و عنوان -->
+            <div class="p-4 h-16 flex items-center justify-center border-b border-gray-200 dark:border-gray-800">
+                <h1 class="text-lg font-bold text-center text-brand-highlight flex items-center gap-2">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M12 19a7 7 0 100-14 7 7 0 000 14z"></path></svg>
+                    <span>دستیار هوشمند</span>
+                </h1>
+            </div>
+            
+            <!-- لیست منوها -->
+            <nav id="sidebarNav" class="flex-1 p-3 space-y-1.5 overflow-y-auto">
+                <a href="#" data-target="dashboardContent" class="sidebar-link flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 3v11.25A2.25 2.25 0 006 16.5h12M3.75 3h16.5v11.25A2.25 2.25 0 0117.25 16.5h-12A2.25 2.25 0 013 14.25V3z" /></svg>
+                    <span>داشبورد</span>
+                </a>
+                <a href="#" data-target="projectsView" class="sidebar-link flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 12.75V12A2.25 2.25 0 014.5 9.75h15A2.25 2.25 0 0121.75 12v.75m-8.69-6.44l-2.12-2.12a1.5 1.5 0 00-1.061-.44H4.5A2.25 2.25 0 002.25 6v12a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18V9a2.25 2.25 0 00-2.25-2.25h-5.379a1.5 1.5 0 01-1.06-.44z" /></svg>
+                    <span>پروژه‌ها</span>
+                </a>
+                 <a href="#" data-target="goalsView" class="sidebar-link flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12c0 1.268-.63 2.39-1.593 3.068a3.745 3.745 0 01-1.043 3.296 3.745 3.745 0 01-3.296 1.043A3.745 3.745 0 0112 21c-1.268 0-2.39-.63-3.068-1.593a3.746 3.746 0 01-3.296-1.043 3.745 3.745 0 01-1.043-3.296A3.745 3.745 0 013 12c0-1.268.63-2.39 1.593-3.068a3.745 3.745 0 011.043-3.296 3.746 3.746 0 013.296-1.043A3.746 3.746 0 0112 3c1.268 0 2.39.63 3.068 1.593a3.746 3.746 0 013.296 1.043 3.746 3.746 0 011.043 3.296A3.745 3.745 0 0121 12z" /></svg>
+                    <span>اهداف و عملکرد</span>
+                </a>
+                <a href="#" data-target="reportingView" class="sidebar-link flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M3 13.125C3 12.504 3.504 12 4.125 12h15.75c.621 0 1.125.504 1.125 1.125v6.75C21 20.496 20.496 21 19.875 21H4.125C3.504 21 3 20.496 3 19.875v-6.75zM3 8.625c0-.621.504-1.125 1.125-1.125h15.75c.621 0 1.125.504 1.125 1.125v.75c0 .621-.504 1.125-1.125 1.125H4.125A1.125 1.125 0 013 9.375v-.75zM3 4.125c0-.621.504-1.125 1.125-1.125h15.75c.621 0 1.125.504 1.125 1.125v.75c0 .621-.504 1.125-1.125 1.125H4.125A1.125 1.125 0 013 4.875v-.75z" /></svg>
+                    <span>گزارش‌ها</span>
+                </a>
+                <a href="#" data-target="teamManagementView" class="sidebar-link flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M18 18.72a9.094 9.094 0 003.741-.479 3 3 0 00-4.682-2.72m-7.5 0A48.667 48.667 0 0012 12.75c-2.67 0-5.193.398-7.5.997A3 3 0 002.25 18.72v-.243a3.75 3.75 0 013.75-3.75h1.5a3 3 0 013 3v.243zM12 12.75c2.67 0 5.193.398 7.5.997m-7.5 0V6A3 3 0 0115 3v.243m0 0A3 3 0 0112 3.75h-1.5a3 3 0 01-3-3V3a3 3 0 013 3v.243m3 9.525c.607.032 1.192.06 1.74.082a3.75 3.75 0 003.74-3.74V6.75A3.75 3.75 0 0013.5 3H12V6A3 3 0 009 9v.243m3 3.525z" /></svg>
+                    <span>مدیریت تیم</span>
+                </a>
+                <a href="#" data-target="contractsView" class="sidebar-link flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" /></svg>
+                    <span>قراردادها</span>
+                </a>
+                <a href="#" data-target="trainingView" class="sidebar-link flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M4.26 10.147a60.436 60.436 0 00-.491 6.347A48.627 48.627 0 0112 20.904a48.627 48.627 0 018.232-4.41 60.46 60.46 0 00-.491-6.347m-15.482 0a50.57 50.57 0 00-2.658-.813A59.905 59.905 0 0112 3.493a59.902 59.902 0 0110.399 5.84c-.896.248-1.783.52-2.658.814m-15.482 0A50.697 50.697 0 0112 13.489a50.697 50.697 0 017.74-3.342M6.75 15a.75.75 0 100-1.5.75.75 0 000 1.5z" /></svg>
+                    <span>آموزش هوشمند</span>
+                </a>
+                <a href="#" data-target="chatView" class="sidebar-link flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M8.625 9.75a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H8.25m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H12m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0h-.375M21 12c0 4.556-3.86 8.25-8.625 8.25a9.77 9.77 0 01-2.573-.397m-4.136 0c-1.15.35-2.353.5-3.597.5-4.765 0-8.625-3.694-8.625-8.25s3.86-8.25 8.625-8.25 8.625 3.694 8.625 8.25z" /></svg>
+                    <span>چت هوشمند</span>
+                </a>
+
+                <!-- ماژول‌های تخصصی -->
+                <p class="px-3 pt-3 pb-1 text-xs font-semibold text-gray-400 uppercase tracking-wider">ماژول‌های تخصصی</p>
+
+                <a href="#" data-target="productivityView" class="sidebar-link flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M10.5 6a7.5 7.5 0 100 15 7.5 7.5 0 000-15zM21 21l-5.69-5.69" /></svg>
+                    <span>تحلیل بهره‌وری</span>
+                </a>
+                <a href="#" data-target="roadmapView" class="sidebar-link flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15.59 14.37a6 6 0 01-5.84 7.38v-4.8m5.84-2.58a14.98 14.98 0 006.16-12.12A14.98 14.98 0 009.631 8.41m5.96 5.96a14.926 14.926 0 01-5.841 2.58m-.119-8.54a6 6 0 00-7.381 5.84h4.8m2.581-5.84a14.927 14.927 0 00-2.58 5.84m2.699 2.7c-.103.021-.207.041-.314.06a15.09 15.09 0 01-2.448-2.448 14.9 14.9 0 01.06-.314m-2.7 2.7a15.09 15.09 0 00-2.448 2.448 14.9 14.9 0 00.06.314m0 0a14.927 14.927 0 00-5.84 2.58m5.84-2.58a14.926 14.926 0 012.58-5.84m0 0a6 6 0 017.38-5.84m-7.38 5.84H4.881c1.03 0 1.9.6 2.342 1.5a6.002 6.002 0 014.287 4.287c.906.442 1.5.742 1.5 2.342v4.881" /></svg>
+                    <span>نقشه‌راه</span>
+                </a>
+                 <a href="#" data-target="processView" class="sidebar-link flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z" /></svg>
+                    <span>بهینه‌سازی فرآیند</span>
+                </a>
+                <a href="#" data-target="letterWriterView" class="sidebar-link flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" /></svg>
+                    <span>نامه‌ساز هوشمند</span>
+                </a>
+                <a href="#" data-target="proposalWriterView" class="sidebar-link flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25M9 16.5v.75m3-3v3M15 12v5.25m-4.5-15H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" /></svg>
+                    <span>پروپوزال‌ساز</span>
+                </a>
+                 <a href="#" data-target="messageWriterView" class="sidebar-link flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M7.5 8.25h9m-9 3H12m-6.75 3h9m-9 3h9m-9 3h9M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5M3.75 19.5h16.5" /></svg>
+                    <span>پیام‌ساز هوشمند</span>
+                </a>
+                <a href="#" data-target="translateView" class="sidebar-link flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M10.5 21l5.25-11.25L21 21m-9-3h7.5M3 5.621a48.474 48.474 0 016-.371m0 0c1.12 0 2.233.038 3.334.114M9 5.25V3m3.334 2.364C11.176 10.658 7.69 15.08 3 17.502m9.334-12.138c.896.061 1.785.147 2.666.257m-4.589 8.495a18.023 18.023 0 01-3.827-5.802" /></svg>
+                    <span>ترجمه هوشمند</span>
+                </a>
+                <a href="#" data-target="teamChatView" class="sidebar-link flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 12.76c.243.08 3.534.64 6.632 2.182 3.097 1.543 6.314 1.74 9.49.468M2.25 12.76V8.25a2.25 2.25 0 012.25-2.25h15a2.25 2.25 0 012.25 2.25v8.692c0 1.24-1.01 2.25-2.25 2.25H4.5A2.25 2.25 0 012.25 16.942V12.76z" /></svg>
+                    <span>چت سازمانی</span>
+                </a>
+                
+                <!-- آیتم‌های پایین منو -->
+                <div class="pt-3 border-t border-gray-200 dark:border-gray-800 space-y-1.5">
+                    <a href="#" data-target="settingsView" class="sidebar-link flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M10.343 3.94c.09-.542.56-.94 1.11-.94h1.093c.55 0 1.02.398 1.11.94l.149.894c.07.424.384.764.78.93.398.164.855.142 1.205-.108l.737-.527a1.125 1.125 0 011.45.12l.773.774a1.125 1.125 0 01.12 1.45l-.527.737c-.25.35-.272.806-.108 1.204.165.397.505.71.93.78l.893.15c.543.09.94.56.94 1.11v1.093c0 .55-.397 1.02-.94 1.11l-.893.149c-.425.07-.765.383-.93.78-.165.398-.143.854.108 1.204l.527.738a1.125 1.125 0 01-.12 1.45l-.773.773a1.125 1.125 0 01-1.45.12l-.737-.527c-.35-.25-.806-.272-1.204-.108-.397.165-.71.505-.78.93l-.15.893c-.09.543-.56.94-1.11.94h-1.093c-.55 0-1.02-.398-1.11-.94l-.149-.894c-.07-.424-.384-.764-.78-.93-.398-.164-.855-.142-1.205.108l-.737.527a1.125 1.125 0 01-1.45-.12l-.773-.774a1.125 1.125 0 01-.12-1.45l.527-.737c.25-.35.273-.806.108-1.204-.165-.397-.506-.71-.93-.78l-.894-.15c-.542-.09-.94-.56-.94-1.11v-1.093c0-.55.398-1.02.94-1.11l.894-.149c.424-.07.765-.383.93-.78.165-.398.143-.854-.108-1.204l-.527-.738a1.125 1.125 0 01.12-1.45l.773-.773a1.125 1.125 0 011.45-.12l.737.527c.35.25.806.272 1.204.108.397-.165.71-.505.78-.93l.15-.893z" /><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
+                        <span>تنظیمات</span>
+                    </a>
+                </div>
+            </nav>
+            
+            <!-- پروفایل کاربر -->
+            <div class="p-3 border-t border-gray-200 dark:border-gray-800 mt-auto flex items-center justify-between">
+                <a href="#" data-target="profileView" class="sidebar-link flex items-center gap-3 w-full p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800">
+                    <img id="profileImg" class="h-9 w-9 rounded-full object-cover" src="https://placehold.co/100x100/14b8a6/FFFFFF?text=A" alt="پروفایل">
+                    <div>
+                        <p id="profileName" class="font-semibold text-sm text-gray-900 dark:text-white">دکتر رضایی</p>
+                        <p id="profileRole" class="text-xs text-gray-500 dark:text-gray-400">مدیر ارشد</p>
+                    </div>
+                </a>
+                <button id="sidebarLogoutButton" class="flex-shrink-0 p-2 mr-1 rounded-lg text-gray-500 hover:bg-red-100 hover:text-red-600 dark:hover:bg-gray-800 dark:hover:text-red-400 transition-colors" title="خروج">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15M15.75 9l-2.25-2.25m0 0l-2.25 2.25m2.25-2.25v7.5M21 12h-6.375" />
+                    </svg>
+                </button>
+            </div>
+        </aside>
+
+        <!-- محتوای اصلی (ناحیه قابل اسکرول) -->
+        <main class="flex-1 overflow-y-auto p-4 md:p-6 bg-brand-light dark:bg-black transition-colors duration-300">
+            
+            <!-- هدر اصلی -->
+            <header class="flex flex-col md:flex-row justify-between md:items-center mb-4 gap-3">
+                <div>
+                     <p id="welcomeMessage" class="text-sm font-medium text-gray-600 dark:text-gray-400">در حال بارگذاری...</p>
+                     <h2 id="pageTitle" class="text-xl font-bold text-gray-900 dark:text-white">داشبورد</h2>
+                </div>
+                
+                <div class="flex items-center gap-3">
+                    <!-- نوار فرمان هوشمند (Copilot-Style) -->
+                    <div class="relative flex-1">
+                        <input type="text" placeholder="«خلاصه عملکرد تیم پشتیبانی در این هفته»" 
+                               class="w-full pl-10 pr-3 py-2 bg-brand-card-light dark:bg-gray-900 border border-gray-300 dark:border-gray-700 rounded-lg focus:outline-none focus:border-brand-highlight focus:ring-1 focus:ring-brand-highlight text-sm"
+                               style="min-width: 300px;">
+                        <span class="absolute left-3 top-1/2 -translate-y-1/2 text-brand-highlight">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 00-2.456 2.456zM16.898 20.624L16.5 21.75l-.398-1.126a3.375 3.375 0 00-2.456-2.456L12.5 17.25l1.126-.398a3.375 3.375 0 002.456-2.456L16.5 13.5l.398 1.126a3.375 3.375 0 002.456 2.456L20.25 18l-1.126.398a3.375 3.375 0 00-2.456 2.456z" /></svg>
+                        </span>
+                    </div>
+                    <!-- دکمه حالت تاریک/روشن -->
+                    <button id="theme-toggle" class="p-2 rounded-lg bg-brand-card-light dark:bg-gray-900 border border-gray-300 dark:border-gray-700 text-gray-600 dark:text-gray-300">
+                        <svg id="theme-toggle-dark-icon" class="h-4 w-4 hidden" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
+                        <svg id="theme-toggle-light-icon" class="h-4 w-4 hidden" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm0 13a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zm8-5a1 1 0 01-1 1h-1a1 1 0 110-2h1a1 1 0 011 1zM3 10a1 1 0 01-1 1H1a1 1 0 110-2h1a1 1 0 011 1zM16 16a1 1 0 01-1-1v-1a1 1 0 112 0v1a1 1 0 01-1 1zM5 4a1 1 0 01-1-1V2a1 1 0 112 0v1a1 1 0 01-1 1zM16 4a1 1 0 01-1-1V2a1 1 0 112 0v1a1 1 0 01-1 1zM5 16a1 1 0 01-1-1v-1a1 1 0 112 0v1a1 1 0 01-1 1zM10 7a3 3 0 100 6 3 3 0 000-6z"></path></svg>
+                    </button>
+                </div>
+            </header>
+            
+            <!-- =============================== -->
+            <!--   Container محتوای صفحات     -->
+            <!-- =============================== -->
+            <div id="pageContentContainer" class="space-y-5">
+
+                <!-- 1. محتوای داشبورد (اصلی) -->
+                <div id="dashboardContent" class="page-view space-y-5">
+                    
+                    <!-- Admin Dashboard View -->
+                    <div class="admin-view space-y-5">
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            <!-- KPI Cards -->
+                            <div class="bg-brand-card-light dark:bg-gray-900 p-4 rounded-lg border border-gray-200 dark:border-gray-800 fade-in">
+                                <h4 class="text-xs font-medium text-gray-500 dark:text-gray-400 mb-1">بهره‌وری کل سازمان</h4>
+                                <p class="text-2xl font-bold text-gray-900 dark:text-white">۸۲٪</p>
+                            </div>
+                            <div class="bg-brand-card-light dark:bg-gray-900 p-4 rounded-lg border border-gray-200 dark:border-gray-800 fade-in" style="animation-delay: 100ms;">
+                                <h4 class="text-xs font-medium text-gray-500 dark:text-gray-400 mb-1">پروژه‌های فعال</h4>
+                                <p class="text-2xl font-bold text-gray-900 dark:text-white">۱۴</p>
+                            </div>
+                            <div class="bg-brand-card-light dark:bg-gray-900 p-4 rounded-lg border border-gray-200 dark:border-gray-800 fade-in" style="animation-delay: 200ms;">
+                                <h4 class="text-xs font-medium text-gray-500 dark:text-gray-400 mb-1">پیشرفت اهداف (فصلی)</h4>
+                                <p class="text-2xl font-bold text-brand-highlight">۶۸٪</p>
+                            </div>
+                        </div>
+                        
+                        <!-- AI Insight Box -->
+                        <div class="ai-insight-box fade-in" style="animation-delay: 300ms;">
+                            <p class="text-sm font-medium text-gray-800 dark:text-gray-200">
+                                <span class="font-bold text-brand-highlight-dark dark:text-brand-highlight">پیشنهاد هوشمند:</span>
+                                عملکرد تیم پشتیبانی را بررسی کنید — بهره‌وری در هفته گذشته ۱۲٪ کاهش یافته است.
+                            </p>
+                        </div>
+                        
+                        <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
+                            <div class="lg:col-span-2 bg-brand-card-light dark:bg-gray-900 p-4 rounded-lg border border-gray-200 dark:border-gray-800 fade-in" style="animation-delay: 400ms;">
+                                <h3 class="font-semibold mb-3 text-sm">روند بهره‌وری (ماهانه)</h3>
+                                <canvas id="adminTrendChart"></canvas>
+                            </div>
+                            <div class="bg-brand-card-light dark:bg-gray-900 p-4 rounded-lg border border-gray-200 dark:border-gray-800 fade-in" style="animation-delay: 500ms;">
+                                <h3 class="font-semibold mb-3 text-sm">وضعیت پروژه‌ها</h3>
+                                <canvas id="adminProjectsChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Employee Dashboard View -->
+                    <div class="employee-view space-y-5">
+                         <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
+                            <div class="lg:col-span-2 bg-brand-card-light dark:bg-gray-900 p-4 rounded-lg border border-gray-200 dark:border-gray-800 fade-in">
+                                <h3 class="font-semibold mb-3 text-sm">لیست وظایف امروز</h3>
+                                <div class="space-y-2">
+                                    <div class="flex items-center gap-2 p-2 bg-gray-100 dark:bg-gray-800 rounded-md">
+                                        <span class="w-2 h-2 rounded-full bg-red-500 flex-shrink-0"></span>
+                                        <span class="flex-1 text-sm font-medium">ارسال گزارش مالی</span>
+                                        <span class="text-xs text-gray-500">تا ساعت ۱۴:۰۰</span>
+                                    </div>
+                                    <div class="flex items-center gap-2 p-2 bg-gray-100 dark:bg-gray-800 rounded-md">
+                                        <span class="w-2 h-2 rounded-full bg-yellow-500 flex-shrink-0"></span>
+                                        <span class="flex-1 text-sm font-medium">بررسی تیکت‌های پشتیبانی</span>
+                                        <span class="text-xs text-gray-500">۳ مورد</span>
+                                    </div>
+                                    <div class="flex items-center gap-2 p-2 bg-gray-100 dark:bg-gray-800 rounded-md opacity-60">
+                                        <span class="w-2 h-2 rounded-full bg-green-500 flex-shrink-0"></span>
+                                        <span class="flex-1 text-sm font-medium line-through">تکمیل خلاصه‌ی دیروز</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="bg-brand-card-light dark:bg-gray-900 p-4 rounded-lg border border-gray-200 dark:border-gray-800 fade-in" style="animation-delay: 100ms;">
+                                <h3 class="font-semibold mb-3 text-sm">پیشرفت شخصی (هفتگی)</h3>
+                                <canvas id="employeeProgressChart"></canvas>
+                            </div>
+                         </div>
+                         <!-- AI Tip Box -->
+                        <div class="ai-insight-box fade-in" style="animation-delay: 200ms;">
+                            <p class="text-sm font-medium text-gray-800 dark:text-gray-200">
+                                <span class="font-bold text-brand-highlight-dark dark:text-brand-highlight">پیشنهاد هوشمند:</span>
+                                وظیفه «گزارش مالی» را برای افزایش بهره‌وری، به بعد از ظهر موکول کنید.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 2. صفحه پروژه‌ها -->
+                <div id="projectsView" class="page-view hidden space-y-5">
+                    <!-- Admin View -->
+                    <div class="admin-view space-y-4">
+                        <div class="flex justify-between items-center">
+                            <button class="btn-primary">پروژه جدید +</button>
+                            <div class="flex gap-2">
+                                <span class="text-xs text-gray-500 dark:text-gray-400">اعلان تاخیر: <span class="font-bold text-red-500">۳</span></span>
+                            </div>
+                        </div>
+                        <div class="ai-insight-box">
+                            <p class="text-sm font-medium text-gray-800 dark:text-gray-200">
+                                <span class="font-bold text-brand-highlight-dark dark:text-brand-highlight">تحلیل هوشمند:</span>
+                                پروژه «آلفا» ۳ روز تاخیر دارد. پیشنهاد می‌شود منابع تیم پشتیبانی به آن تخصیص یابد.
+                            </p>
+                        </div>
+                        <div class="bg-brand-card-light dark:bg-gray-900 p-4 rounded-lg border border-gray-200 dark:border-gray-800 fade-in">
+                            <h3 class="font-semibold text-sm mb-3">نمای کلی پروژه‌ها (شبیه‌سازی Gantt)</h3>
+                            <p class="text-xs text-gray-500 dark:text-gray-400">... (محتوای گانت چارت در اینجا قرار می‌گیرد) ...</p>
+                        </div>
+                    </div>
+                    <!-- Employee View -->
+                    <div class="employee-view space-y-4">
+                        <div class="flex justify-between items-center">
+                             <h3 class="font-semibold text-sm">پروژه‌های من</h3>
+                             <button class="btn-primary">افزودن یادداشت/فایل +</button>
+                        </div>
+                        <div class="ai-insight-box">
+                            <p class="text-sm font-medium text-gray-800 dark:text-gray-200">
+                                <span class="font-bold text-brand-highlight-dark dark:text-brand-highlight">پیشنهاد هوشمند:</span>
+                                وظیفه «مستندسازی» در پروژه آلفا اولویت بالایی دارد. پیشنهاد می‌شود امروز آن را شروع کنید.
+                            </p>
+                        </div>
+                        <div class="bg-brand-card-light dark:bg-gray-900 p-4 rounded-lg border border-gray-200 dark:border-gray-800 fade-in">
+                            <!-- لیست پروژه کارمند -->
+                            <div class="space-y-3">
+                                <div class="p-3 bg-gray-100 dark:bg-gray-800 rounded-lg">
+                                    <div class="flex justify-between items-center mb-1">
+                                        <span class="font-semibold text-sm">پروژه آلفا</span>
+                                        <span class="text-xs text-brand-highlight font-medium">۷۵٪</span>
+                                    </div>
+                                    <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-1.5">
+                                        <div class="bg-brand-highlight h-1.5 rounded-full" style="width: 75%"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 3. صفحه اهداف و عملکرد -->
+                <div id="goalsView" class="page-view hidden space-y-5">
+                    <!-- Admin View -->
+                    <div class="admin-view space-y-4">
+                        <div class="ai-insight-box">
+                            <p class="text-sm font-medium text-gray-800 dark:text-gray-200">
+                                <span class="font-bold text-brand-highlight-dark dark:text-brand-highlight">توصیه هوشمند:</span>
+                                تمرکز بر کاهش زمان پاسخگویی پشتیبانی ممکن است کارایی را تا ۵٪ افزایش دهد.
+                            </p>
+                        </div>
+                         <div class="bg-brand-card-light dark:bg-gray-900 p-4 rounded-lg border border-gray-200 dark:border-gray-800 fade-in">
+                            <h3 class="font-semibold text-sm mb-3">نرخ تکمیل اهداف (تیمی)</h3>
+                            <canvas id="adminGoalsChart"></canvas>
+                        </div>
+                    </div>
+                    <!-- Employee View -->
+                    <div class="employee-view space-y-4">
+                        <div class="ai-insight-box">
+                            <p class="text-sm font-medium text-gray-800 dark:text-gray-200">
+                                <span class="font-bold text-brand-highlight-dark dark:text-brand-highlight">بازخورد هوشمند:</span>
+                                شما این ماه به ۷۵٪ از اهداف خود دست یافته‌اید. عالی بود!
+                            </p>
+                        </div>
+                        <div class="bg-brand-card-light dark:bg-gray-900 p-4 rounded-lg border border-gray-200 dark:border-gray-800 fade-in">
+                            <h3 class="font-semibold text-sm mb-3">اهداف شخصی من</h3>
+                            <div class="space-y-3">
+                                <div class="p-3 bg-gray-100 dark:bg-gray-800 rounded-lg">
+                                    <div class="flex justify-between items-center mb-1">
+                                        <span class="font-medium text-sm">کاهش زمان پاسخ به تیکت</span>
+                                        <span class="text-xs text-green-500 font-medium">۱۰۰٪</span>
+                                    </div>
+                                    <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-1.5">
+                                        <div class="bg-green-500 h-1.5 rounded-full" style="width: 100%"></div>
+                                    </div>
+                                </div>
+                                <div class="p-3 bg-gray-100 dark:bg-gray-800 rounded-lg">
+                                    <div class="flex justify-between items-center mb-1">
+                                        <span class="font-medium text-sm">تکمیل دوره پایتون</span>
+                                        <span class="text-xs text-brand-highlight font-medium">۵۰٪</span>
+                                    </div>
+                                    <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-1.5">
+                                        <div class="bg-brand-highlight h-1.5 rounded-full" style="width: 50%"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 4. صفحه گزارش‌ها -->
+                <div id="reportingView" class="page-view hidden space-y-5">
+                    <div class="flex justify-between items-center">
+                        <div class="flex gap-2">
+                            <button class="filter-btn active">هفتگی</button>
+                            <button class="filter-btn">ماهانه</button>
+                            <button class="filter-btn">سفارشی</button>
+                        </div>
+                        <div class="admin-view flex gap-2">
+                            <button class="btn-primary">خروجی PDF</button>
+                            <button class="btn-primary">خروجی Excel</button>
+                        </div>
+                    </div>
+                    
+                    <!-- Admin View -->
+                    <div class="admin-view space-y-4">
+                        <div class="ai-insight-box">
+                            <p class="text-sm font-medium text-gray-800 dark:text-gray-200">
+                                <span class="font-bold text-brand-highlight-dark dark:text-brand-highlight">خلاصه هوشمند:</span>
+                                بهره‌وری تیم تحقیق و توسعه (R&D) هفته گذشته ۱۵٪ افزایش یافته است.
+                            </p>
+                        </div>
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                            <div class="bg-brand-card-light dark:bg-gray-900 p-4 rounded-lg border border-gray-200 dark:border-gray-800 fade-in">
+                                <h3 class="font-semibold text-sm mb-3">بهره‌وری تیمی (هفتگی)</h3>
+                                <canvas id="reportTeamProdChart"></canvas>
+                            </div>
+                            <div class="bg-brand-card-light dark:bg-gray-900 p-4 rounded-lg border border-gray-200 dark:border-gray-800 fade-in">
+                                <h3 class="font-semibold text-sm mb-3">روند حضور و غیاب</h3>
+                                <canvas id="reportAttendanceChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Employee View -->
+                    <div class="employee-view space-y-4">
+                         <div class="ai-insight-box">
+                            <p class="text-sm font-medium text-gray-800 dark:text-gray-200">
+                                <span class="font-bold text-brand-highlight-dark dark:text-brand-highlight">بازخورد هوشمند:</span>
+                                نقاط قوت شما: <span class="font-semibold">دقت در گزارش‌دهی</span>. نقاط ضعف: <span class="font-semibold">مدیریت زمان تسک‌ها</span>.
+                            </p>
+                        </div>
+                         <div class="bg-brand-card-light dark:bg-gray-900 p-4 rounded-lg border border-gray-200 dark:border-gray-800 fade-in">
+                            <h3 class="font-semibold text-sm mb-3">خلاصه فعالیت ماهانه شما</h3>
+                            <canvas id="reportEmployeeActivityChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 5. صفحه مدیریت تیم -->
+                <div id="teamManagementView" class="page-view hidden space-y-5">
+                    <!-- Admin View -->
+                    <div class="admin-view space-y-4">
+                        <button class="btn-primary">افزودن تیم +</button>
+                        <div class="ai-insight-box">
+                            <p class="text-sm font-medium text-gray-800 dark:text-gray-200">
+                                <span class="font-bold text-brand-highlight-dark dark:text-brand-highlight">پیشنهاد هوشمند:</span>
+                                تیم پشتیبانی فنی با کمبود نیرو مواجه است. پیشنهاد می‌شود یک کارشناس جدید به این تیم اضافه شود.
+                            </p>
+                        </div>
+                        <div class="bg-brand-card-light dark:bg-gray-900 p-4 rounded-lg border border-gray-200 dark:border-gray-800 fade-in">
+                            <h3 class="font-semibold text-sm mb-3">ساختار تیم‌ها</h3>
+                            <div class="space-y-3">
+                                <div class="p-3 bg-gray-100 dark:bg-gray-800 rounded-lg flex justify-between items-center">
+                                    <div>
+                                        <p class="font-semibold text-sm">تیم طراحی محصول</p>
+                                        <p class="text-xs text-gray-500 dark:text-gray-400">۵ عضو، مدیر: خانم احمدی</p>
+                                    </div>
+                                    <span class="text-sm font-bold text-brand-highlight">۸۸٪ بهره‌وری</span>
+                                </div>
+                                <div class="p-3 bg-gray-100 dark:bg-gray-800 rounded-lg flex justify-between items-center">
+                                    <div>
+                                        <p class="font-semibold text-sm">تیم پشتیبانی فنی</p>
+                                        <p class="text-xs text-gray-500 dark:text-gray-400">۸ عضو، مدیر: آقای کریمی</p>
+                                    </div>
+                                    <span class="text-sm font-bold text-red-500">۶۵٪ بهره‌وری</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Employee View -->
+                    <div class="employee-view space-y-4">
+                        <div class="ai-insight-box">
+                            <p class="text-sm font-medium text-gray-800 dark:text-gray-200">
+                                <span class="font-bold text-brand-highlight-dark dark:text-brand-highlight">همکار پیشنهادی:</span>
+                                برای تسک «گزارش مالی»، خانم احمدی از تیم مالی بهترین فرد برای همکاری است.
+                            </p>
+                        </div>
+                        <div class="bg-brand-card-light dark:bg-gray-900 p-4 rounded-lg border border-gray-200 dark:border-gray-800 fade-in">
+                            <h3 class="font-semibold text-sm mb-3">اعضای تیم من (پشتیبانی فنی)</h3>
+                            <div class="space-y-2">
+                                <div class="p-2 bg-gray-100 dark:bg-gray-800 rounded-lg flex justify-between items-center">
+                                    <p class="font-medium text-sm">آقای کریمی (مدیر تیم)</p>
+                                    <button class="text-xs btn-highlight" style="padding: 4px 8px;">پیام</button>
+                                </div>
+                                <div class="p-2 bg-gray-100 dark:bg-gray-800 rounded-lg flex justify-between items-center">
+                                    <p class="font-medium text-sm">خانم محمدی (کارشناس)</p>
+                                    <button class="text-xs btn-highlight" style="padding: 4px 8px;">پیام</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 6. صفحه قراردادها (ماژول قرارداد هوشمند) -->
+                <div id="contractsView" class="page-view hidden space-y-5">
+                    <!-- Admin View -->
+                    <div class="admin-view space-y-4">
+                        <button class="btn-primary">ایجاد قرارداد جدید (با AI) +</button>
+                        <div class="ai-insight-box">
+                            <p class="text-sm font-medium text-gray-800 dark:text-gray-200">
+                                <span class="font-bold text-brand-highlight-dark dark:text-brand-highlight">تحلیل هوشمند:</span>
+                                بند ۱۴ قرارداد «فناوران» دارای ابهام حقوقی است. <a href="#" class="font-bold">بررسی بند</a>
+                            </p>
+                        </div>
+                        <div class="grid grid-cols-3 gap-4">
+                            <div class="bg-brand-card-light dark:bg-gray-900 p-4 rounded-lg border border-gray-200 dark:border-gray-800">
+                                <h4 class="font-semibold text-sm mb-2 text-yellow-500">در انتظار تایید (۲)</h4>
+                                <!-- کارت قرارداد -->
+                            </div>
+                             <div class="bg-brand-card-light dark:bg-gray-900 p-4 rounded-lg border border-gray-200 dark:border-gray-800">
+                                <h4 class="font-semibold text-sm mb-2 text-green-500">تایید شده (۸)</h4>
+                                <!-- کارت قرارداد -->
+                            </div>
+                             <div class="bg-brand-card-light dark:bg-gray-900 p-4 rounded-lg border border-gray-200 dark:border-gray-800">
+                                <h4 class="font-semibold text-sm mb-2 text-red-500">رد شده (۱)</h4>
+                                <!-- کارت قرارداد -->
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Employee View -->
+                    <div class="employee-view space-y-4">
+                        <button class="btn-primary">درخواست قرارداد جدید +</button>
+                         <div class="ai-insight-box">
+                            <p class="text-sm font-medium text-gray-800 dark:text-gray-200">
+                                <span class="font-bold text-brand-highlight-dark dark:text-brand-highlight">خلاصه هوشمند:</span>
+                                قرارداد شما تا ۱۴۰۴/۰۶/۰۱ معتبر است. نکات کلیدی: حقوق پایه، تعهد به عدم افشای اطلاعات.
+                            </p>
+                        </div>
+                        <div class="bg-brand-card-light dark:bg-gray-900 p-4 rounded-lg border border-gray-200 dark:border-gray-800 fade-in">
+                            <h3 class="font-semibold text-sm mb-3">قراردادهای من</h3>
+                            <div class="p-3 bg-gray-100 dark:bg-gray-800 rounded-lg flex justify-between items-center">
+                                <p class="font-medium text-sm">قرارداد همکاری (۱۴۰۳)</p>
+                                <span class="text-xs px-2 py-1 rounded-full bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-300">تایید شده</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 7. صفحه آموزش هوشمند -->
+                <div id="trainingView" class="page-view hidden space-y-5">
+                    <!-- Admin View -->
+                    <div class="admin-view space-y-4">
+                         <div class="ai-insight-box">
+                            <p class="text-sm font-medium text-gray-800 dark:text-gray-200">
+                                <span class="font-bold text-brand-highlight-dark dark:text-brand-highlight">توصیه هوشمند:</span>
+                                دوره «مدیریت زمان برای مدیران پروژه» را فعال کنید.
+                            </p>
+                        </div>
+                        <div class="bg-brand-card-light dark:bg-gray-900 p-4 rounded-lg border border-gray-200 dark:border-gray-800 fade-in">
+                            <h3 class="font-semibold text-sm mb-3">مشارکت تیمی در دوره‌ها</h3>
+                            <canvas id="learningParticipationChart"></canvas>
+                        </div>
+                    </div>
+                    <!-- Employee View -->
+                    <div class="employee-view space-y-4">
+                         <div class="ai-insight-box">
+                            <p class="text-sm font-medium text-gray-800 dark:text-gray-200">
+                                <span class="font-bold text-brand-highlight-dark dark:text-brand-highlight">دستیار هوشمند:</span>
+                                هوش مصنوعی تشخیص داد مهارت گزارش‌نویسی شما نیاز به بهبود دارد. دوره پیشنهادی: «گزارش‌نویسی حرفه‌ای در ادارات».
+                            </p>
+                        </div>
+                        <div class="bg-brand-card-light dark:bg-gray-900 p-4 rounded-lg border border-gray-200 dark:border-gray-800 fade-in">
+                            <h3 class="font-semibold text-sm mb-3">دوره‌های فعال من</h3>
+                             <div class="p-3 border border-gray-200 dark:border-gray-700 rounded-lg">
+                                <div class="flex justify-between items-center mb-1">
+                                    <span class="font-semibold text-sm">گزارش‌نویسی حرفه‌ای</span>
+                                    <span class="text-xs text-brand-highlight font-medium">۲۰٪</span>
+                                </div>
+                                <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-1.5">
+                                    <div class="bg-brand-highlight h-1.5 rounded-full" style="width: 20%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 8. صفحه چت هوشمند -->
+                <div id="chatView" class="page-view hidden">
+                    <div class="bg-brand-card-light dark:bg-gray-900 h-[calc(100vh-150px)] flex flex-col rounded-lg border border-gray-200 dark:border-gray-800 fade-in">
+                        <!-- هدر چت -->
+                        <div class="p-3 border-b border-gray-200 dark:border-gray-800 flex-shrink-0">
+                            <h3 class="font-semibold text-sm">چت با دستیار هوشمند</h3>
+                        </div>
+                        <!-- بدنه چت -->
+                        <div class="flex-1 p-4 space-y-4 overflow-y-auto">
+                            <!-- پیام دستیار -->
+                            <div class="flex justify-start">
+                                <div class="p-3 rounded-lg max-w-lg bg-gray-100 dark:bg-gray-800">
+                                    <p class="text-sm">سلام <span id="chatProfileName"></span>، چگونه می‌توانم به شما کمک کنم؟</p>
+                                    <!-- دکمه‌های پیشنهادی مدیر -->
+                                    <div class="admin-view mt-3 space-y-2">
+                                        <button class="text-xs p-2 rounded-md bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 w-full text-right">چگونه بهره‌وری تیم IT را افزایش دهم؟</button>
+                                        <button class="text-xs p-2 rounded-md bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 w-full text-right">کدام پروژه‌ها بالاترین ROI را دارند؟</button>
+                                    </div>
+                                    <!-- دکمه‌های پیشنهادی کارمند -->
+                                    <div class="employee-view mt-3 space-y-2">
+                                        <button class="text-xs p-2 rounded-md bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 w-full text-right">خلاصه وضعیت پروژه X.</button>
+                                        <button class="text-xs p-2 rounded-md bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 w-full text-right">چگونه درخواست مرخصی رسمی بنویسم؟</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- ورودی چت -->
+                        <div class="p-3 border-t border-gray-200 dark:border-gray-800 flex-shrink-0">
+                            <div class="relative">
+                                <input type="text" placeholder="پیام خود را تایپ کنید..." class="w-full pl-10 pr-3 py-2 bg-gray-100 dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-lg focus:outline-none focus:ring-1 focus:ring-brand-highlight text-sm">
+                                <button class="absolute left-2 top-1/2 -translate-y-1/2 p-1.5 rounded-md text-white bg-brand-highlight">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor"><path d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009.17 16.57l4.9-3.73a1 1 0 00.17-1.41z"></path></svg>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 9. صفحه تنظیمات -->
+                <div id="settingsView" class="page-view hidden space-y-5">
+                    <div class="bg-brand-card-light dark:bg-gray-900 p-4 rounded-lg border border-gray-200 dark:border-gray-800 fade-in max-w-3xl mx-auto">
+                        <!-- تب‌های تنظیمات -->
+                        <div class="flex gap-1 mb-4 border-b border-gray-200 dark:border-gray-700">
+                            <button class="settings-tab text-sm px-4 py-2 border-b-2 border-brand-highlight text-brand-highlight font-semibold">عمومی</button>
+                            <button class="settings-tab text-sm px-4 py-2 text-gray-500 border-b-2 border-transparent hover:border-gray-300 dark:hover:border-gray-600">اعلان‌ها</button>
+                            <button class="settings-tab text-sm px-4 py-2 text-gray-500 border-b-2 border-transparent hover:border-gray-300 dark:hover:border-gray-600 admin-view">مدیریت نقش‌ها</button>
+                            <button class="settings-tab text-sm px-4 py-2 text-gray-500 border-b-2 border-transparent hover:border-gray-300 dark:hover:border-gray-600 employee-view">یکپارچه‌سازی</button>
+                        </div>
+                        
+                        <!-- محتوای تب عمومی -->
+                        <div class="space-y-4">
+                            <div>
+                                <label class="font-medium text-sm">نام سازمان</label>
+                                <input type="text" value="پارک علم و فناوری" class="w-full mt-1 text-sm p-2 rounded-lg bg-gray-100 dark:bg-gray-800 border border-gray-300 dark:border-gray-700" disabled>
+                            </div>
+                            <!-- ... سایر تنظیمات ... -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 10. صفحه پروفایل -->
+                <div id="profileView" class="page-view hidden space-y-5">
+                    <div class="bg-brand-card-light dark:bg-gray-900 p-6 rounded-lg border border-gray-200 dark:border-gray-800 fade-in max-w-2xl mx-auto">
+                        <div class="flex flex-col items-center">
+                            <img id="profileImgLarge" class="h-20 w-20 rounded-full object-cover mb-3" src="https://placehold.co/100x100/14b8a6/FFFFFF?text=A" alt="پروفایل">
+                            <h2 id="profileNameLarge" class="text-lg font-bold">دکتر رضایی</h2>
+                            <p id="profileRoleLarge" class="text-sm text-gray-500 dark:text-gray-400">مدیر ارشد</p>
+                        </div>
+                        <div class="border-t border-gray-200 dark:border-gray-700 my-5"></div>
+                        <div class="space-y-4">
+                             <div>
+                                <label class="font-medium text-sm">ایمیل</label>
+                                <input type="email" id="profileEmail" value="a.rezaei@example.com" class="w-full mt-1 text-sm p-2 rounded-lg bg-gray-100 dark:bg-gray-800 border border-gray-300 dark:border-gray-700" disabled>
+                            </div>
+                             <div>
+                                <label class="font-medium text-sm">تغییر رمز عبور</label>
+                                <input type="password" placeholder="رمز عبور جدید" class="w-full mt-1 text-sm p-2 rounded-lg bg-gray-100 dark:bg-gray-800 border border-gray-300 dark:border-gray-700 focus:outline-none focus:ring-1 focus:ring-brand-highlight">
+                            </div>
+                            <button class="btn-primary w-full mt-2">ذخیره تغییرات</button>
+                            <button id="logoutButton" class="w-full mt-2 py-2 bg-red-600 text-white rounded-lg text-xs font-semibold hover:bg-red-700 transition-all">خروج از حساب</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- =============================== -->
+                <!--   صفحات ماژول‌های تخصصی جدید   -->
+                <!-- =============================== -->
+
+                <!-- 11. ماژول تحلیل بهره‌وری -->
+                <div id="productivityView" class="page-view hidden space-y-5">
+                    <!-- Admin View -->
+                    <div class="admin-view space-y-4">
+                        <div class="ai-insight-box">
+                            <p class="text-sm font-medium text-gray-800 dark:text-gray-200">
+                                <span class="font-bold text-brand-highlight-dark dark:text-brand-highlight">تحلیل هوشمند:</span>
+                                اوج فعالیت سازمان بین ساعات ۱۰ تا ۱۲ است. افت شدید فعالیت پس از ساعت ۱۶ مشاهده می‌شود. پیشنهاد: بازنگری در ساعات کاری شناور.
+                            </p>
+                        </div>
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                            <div class="bg-brand-card-light dark:bg-gray-900 p-4 rounded-lg border border-gray-200 dark:border-gray-800 fade-in">
+                                <h3 class="font-semibold text-sm mb-3">نقشه حرارتی فعالیت هفتگی (شبیه‌سازی)</h3>
+                                <div class="heatmap-grid">
+                                    <!-- 7 days * 5 rows = 35 cells -->
+                                    <div class="heatmap-cell bg-teal-100"></div><div class="heatmap-cell bg-teal-300"></div><div class="heatmap-cell bg-teal-500"></div><div class="heatmap-cell bg-teal-400"></div><div class="heatmap-cell bg-teal-200"></div><div class="heatmap-cell bg-gray-200"></div><div class="heatmap-cell bg-gray-200"></div>
+                                    <div class="heatmap-cell bg-teal-200"></div><div class="heatmap-cell bg-teal-500"></div><div class="heatmap-cell bg-teal-600"></div><div class="heatmap-cell bg-teal-500"></div><div class="heatmap-cell bg-teal-300"></div><div class="heatmap-cell bg-gray-200"></div><div class="heatmap-cell bg-gray-200"></div>
+                                    <div class="heatmap-cell bg-teal-300"></div><div class="heatmap-cell bg-teal-600"></div><div class="heatmap-cell bg-teal-700"></div><div class="heatmap-cell bg-teal-600"></div><div class="heatmap-cell bg-teal-400"></div><div class="heatmap-cell bg-gray-200"></div><div class="heatmap-cell bg-gray-200"></div>
+                                    <div class="heatmap-cell bg-teal-200"></div><div class="heatmap-cell bg-teal-500"></div><div class="heatmap-cell bg-teal-600"></div><div class="heatmap-cell bg-teal-500"></div><div class="heatmap-cell bg-teal-300"></div><div class="heatmap-cell bg-gray-200"></div><div class="heatmap-cell bg-gray-200"></div>
+                                    <div class="heatmap-cell bg-teal-100"></div><div class="heatmap-cell bg-teal-300"></div><div class="heatmap-cell bg-teal-400"></div><div class="heatmap-cell bg-teal-300"></div><div class="heatmap-cell bg-teal-200"></div><div class="heatmap-cell bg-gray-200"></div><div class="heatmap-cell bg-gray-200"></div>
+                                </div>
+                            </div>
+                            <div class="bg-brand-card-light dark:bg-gray-900 p-4 rounded-lg border border-gray-200 dark:border-gray-800 fade-in">
+                                <h3 class="font-semibold text-sm mb-3">نرخ فعالیت بر اساس ساعت</h3>
+                                <canvas id="activityHourChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Employee View -->
+                    <div class="employee-view space-y-4">
+                        <div class="ai-insight-box">
+                            <p class="text-sm font-medium text-gray-800 dark:text-gray-200">
+                                <span class="font-bold text-brand-highlight-dark dark:text-brand-highlight">تحلیل فردی:</span>
+                                اوج بهره‌وری شما در ساعات ۹ تا ۱۱ صبح است. پیشنهاد می‌شود وظایف سنگین را در این بازه انجام دهید.
+                            </p>
+                        </div>
+                        <div class="bg-brand-card-light dark:bg-gray-900 p-4 rounded-lg border border-gray-200 dark:border-gray-800 fade-in">
+                            <h3 class="font-semibold text-sm mb-3">ساعات اوج و افت شخصی</h3>
+                            <canvas id="employeeActivityChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 12. ماژول نقشه‌راه -->
+                <div id="roadmapView" class="page-view hidden space-y-5">
+                    <div class="bg-brand-card-light dark:bg-gray-900 p-4 rounded-lg border border-gray-200 dark:border-gray-800 fade-in">
+                        <div class="flex justify-between items-center mb-4">
+                            <h3 class="font-semibold text-sm">نقشه‌راه استراتژیک سازمان (۱۴۰۴)</h3>
+                            <button class="btn-primary admin-view">ویرایش مایل‌استون‌ها +</button>
+                        </div>
+                        <!-- شبیه‌سازی تایم‌لاین / نقشه‌راه -->
+                        <div class="space-y-4">
+                            <!-- Milestone 1 -->
+                            <div class="relative pl-8">
+                                <div class="absolute left-0 top-0 h-full w-0.5 bg-gray-300 dark:bg-gray-700"></div>
+                                <div class="absolute left-[-6px] top-1 w-3 h-3 rounded-full bg-brand-highlight border-2 border-white dark:border-gray-900"></div>
+                                <h4 class="font-semibold text-sm">فاز ۱: توسعه پلتفرم پایه</h4>
+                                <p class="text-xs text-gray-500 dark:text-gray-400">Q1 - ۱۴۰۴ | وضعیت: <span class="text-green-500">تکمیل شده</span></p>
+                                <p class="text-xs mt-1">توسعه ماژول‌های اصلی و استقرار اولیه.</p>
+                            </div>
+                            <!-- Milestone 2 -->
+                            <div class="relative pl-8">
+                                <div class="absolute left-0 top-0 h-full w-0.5 bg-gray-300 dark:bg-gray-700"></div>
+                                <div class="absolute left-[-6px] top-1 w-3 h-3 rounded-full bg-blue-500 border-2 border-white dark:border-gray-900"></div>
+                                <h4 class="font-semibold text-sm">فاز ۲: یکپارچه‌سازی هوش مصنوعی</h4>
+                                <p class="text-xs text-gray-500 dark:text-gray-400">Q2 - ۱۴۰۴ | وضعیت: <span class="text-blue-500">در حال اجرا</span></p>
+                                <p class="text-xs mt-1">افزودن ماژول‌های تحلیل و پیشنهاد هوشمند.</p>
+                            </div>
+                            <!-- Milestone 3 -->
+                            <div class="relative pl-8">
+                                <div class="absolute left-[-6px] top-1 w-3 h-3 rounded-full bg-gray-400 border-2 border-white dark:border-gray-900"></div>
+                                <h4 class="font-semibold text-sm">فاز ۳: بهینه‌سازی فرآیندها</h4>
+                                <p class="text-xs text-gray-500 dark:text-gray-400">Q3 - ۱۴۰۴ | وضعیت: <span class="text-gray-400">برنامه‌ریزی شده</span></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 13. ماژول بهینه‌سازی فرآیند -->
+                <div id="processView" class="page-view hidden space-y-5">
+                    <!-- Admin View -->
+                    <div class="admin-view space-y-4">
+                        <div class="ai-insight-box">
+                            <p class="text-sm font-medium text-gray-800 dark:text-gray-200">
+                                <span class="font-bold text-brand-highlight-dark dark:text-brand-highlight">تحلیل گلوگاه:</span>
+                                فرآیند تایید قراردادها به طور میانگین ۴ روز در واحد مالی متوقف می‌شود. پیشنهاد: اتوماسیون تاییدیه اولیه.
+                            </p>
+                        </div>
+                        <div class="bg-brand-card-light dark:bg-gray-900 p-4 rounded-lg border border-gray-200 dark:border-gray-800 fade-in">
+                            <h3 class="font-semibold text-sm mb-3">فرآیندهای در حال تحلیل</h3>
+                            <p class="text-xs text-gray-500">... (نمایش دیاگرام فرآیندها) ...</p>
+                        </div>
+                    </div>
+                    <!-- Employee View -->
+                    <div class="employee-view space-y-4">
+                        <div class="ai-insight-box">
+                            <p class="text-sm font-medium text-gray-800 dark:text-gray-200">
+                                <span class="font-bold text-brand-highlight-dark dark:text-brand-highlight">پیشنهاد فرآیند:</span>
+                                برای ثبت گزارش روزانه، می‌توانید به جای ۳ فرم، از «گزارش‌ساز سریع» در داشبورد استفاده کنید.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 14. ماژول نامه‌ساز هوشمند -->
+                <div id="letterWriterView" class="page-view hidden space-y-5">
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                        <div class="bg-brand-card-light dark:bg-gray-900 p-4 rounded-lg border border-gray-200 dark:border-gray-800 fade-in">
+                            <h3 class="font-semibold text-sm mb-3">تولید نامه رسمی</h3>
+                            <textarea class="w-full text-sm p-2 rounded-lg bg-gray-100 dark:bg-gray-800 border border-gray-300 dark:border-gray-700 focus:outline-none focus:ring-1 focus:ring-brand-highlight" rows="6" placeholder="مثال: «درخواست جلسه با مدیرعامل شرکت X در مورد پروژه Y»"></textarea>
+                            <button class="btn-primary w-full mt-3">تولید نامه</button>
+                        </div>
+                        <div class="bg-brand-card-light dark:bg-gray-900 p-4 rounded-lg border border-gray-200 dark:border-gray-800 fade-in">
+                            <h3 class="font-semibold text-sm mb-3">خروجی</h3>
+                            <div class="w-full text-sm p-3 h-48 overflow-y-auto rounded-lg bg-gray-100 dark:bg-gray-800 border border-gray-300 dark:border-gray-700">
+                                <p class="text-gray-500">... (متن تولید شده در اینجا نمایش داده می‌شود)</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 15. ماژول پروپوزال‌ساز -->
+                <div id="proposalWriterView" class="page-view hidden space-y-5">
+                    <div class="bg-brand-card-light dark:bg-gray-900 p-4 rounded-lg border border-gray-200 dark:border-gray-800 fade-in">
+                        <h3 class="font-semibold text-sm mb-3">تولید پروپوزال پروژه</h3>
+                        <textarea class="w-full text-sm p-2 rounded-lg bg-gray-100 dark:bg-gray-800 border border-gray-300 dark:border-gray-700 focus:outline-none focus:ring-1 focus:ring-brand-highlight" rows="4" placeholder="موضوع اصلی پروپوزال را وارد کنید..."></textarea>
+                        <div class="flex gap-2 flex-wrap my-3">
+                            <button class="filter-btn active">مقدمه</button>
+                            <button class="filter-btn active">تحلیل فنی</button>
+                            <button class="filter-btn">برآورد مالی</button>
+                            <button class="filter-btn active">تایم‌لاین</button>
+                        </div>
+                        <button class="btn-primary w-full">تولید پروپوزال</button>
+                    </div>
+                </div>
+                
+                <!-- 16. ماژول پیام‌ساز هوشمند -->
+                <div id="messageWriterView" class="page-view hidden space-y-5">
+                    <div class="bg-brand-card-light dark:bg-gray-900 p-4 rounded-lg border border-gray-200 dark:border-gray-800 fade-in">
+                        <h3 class="font-semibold text-sm mb-3">تولید پیام و اطلاع‌رسانی</h3>
+                        <textarea class="w-full text-sm p-2 rounded-lg bg-gray-100 dark:bg-gray-800 border border-gray-300 dark:border-gray-700 focus:outline-none focus:ring-1 focus:ring-brand-highlight" rows="4" placeholder="مثال: «اطلاع‌رسانی جلسه عمومی سازمان در روز چهارشنبه»"></textarea>
+                        <div class="flex gap-2 flex-wrap my-3">
+                            <button class="filter-btn active">لحن رسمی</button>
+                            <button class="filter-btn">لحن دوستانه</button>
+                            <button class="filter-btn">اطلاعیه</button>
+                        </div>
+                        <button class="btn-primary w-full">تولید پیام</button>
+                    </div>
+                </div>
+
+                <!-- 17. ماژول ترجمه هوشمند -->
+                <div id="translateView" class="page-view hidden space-y-5">
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                        <div class="bg-brand-card-light dark:bg-gray-900 p-4 rounded-lg border border-gray-200 dark:border-gray-800 fade-in">
+                            <h3 class="font-semibold text-sm mb-3">فارسی</h3>
+                            <textarea class="w-full text-sm p-2 rounded-lg bg-gray-100 dark:bg-gray-800 border border-gray-300 dark:border-gray-700" rows="8"></textarea>
+                        </div>
+                        <div class="bg-brand-card-light dark:bg-gray-900 p-4 rounded-lg border border-gray-200 dark:border-gray-800 fade-in">
+                            <h3 class="font-semibold text-sm mb-3">انگلیسی</h3>
+                            <textarea class="w-full text-sm p-2 rounded-lg bg-gray-100 dark:bg-gray-800 border border-gray-300 dark:border-gray-700" rows="8"></textarea>
+                        </div>
+                    </div>
+                    <button class="btn-primary w-full">ترجمه کن</button>
+                </div>
+
+                <!-- 18. ماژول چت سازمانی -->
+                <div id="teamChatView" class="page-view hidden">
+                    <div class="flex gap-4 h-[calc(100vh-150px)]">
+                        <!-- لیست کاربران -->
+                        <div class="w-1/4 bg-brand-card-light dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-800 p-3 flex-shrink-0">
+                            <h3 class="font-semibold text-sm mb-3">همکاران</h3>
+                            <div class="space-y-2">
+                                <div class="p-2 rounded-lg flex items-center gap-2 bg-gray-100 dark:bg-gray-800 cursor-pointer">
+                                    <img src="https://placehold.co/40x40/1e40af/FFFFFF?text=MM" class="w-8 h-8 rounded-full">
+                                    <span class="font-medium text-sm">خانم محمدی</span>
+                                </div>
+                                <div class="p-2 rounded-lg flex items-center gap-2 hover:bg-gray-100 dark:hover:bg-gray-800 cursor-pointer">
+                                    <img src="https://placehold.co/40x40/500724/FFFFFF?text=AK" class="w-8 h-8 rounded-full">
+                                    <span class="font-medium text-sm">آقای کریمی</span>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- پنجره چت -->
+                        <div class="w-3/4 bg-brand-card-light dark:bg-gray-900 flex flex-col rounded-lg border border-gray-200 dark:border-gray-800 fade-in">
+                            <div class="p-3 border-b border-gray-200 dark:border-gray-800 flex-shrink-0 flex justify-between items-center">
+                                <h3 class="font-semibold text-sm">چت با خانم محمدی</h3>
+                                <button class="btn-highlight text-xs" style="padding: 4px 8px;">خلاصه‌سازی چت (AI)</button>
+                            </div>
+                            <div class="flex-1 p-4 space-y-4 overflow-y-auto">
+                                <!-- ... (پیام‌های چت) ... -->
+                                <div class="flex justify-start">
+                                    <div class="p-3 rounded-lg max-w-lg bg-gray-100 dark:bg-gray-800">
+                                        <p class="text-sm">سلام، لطفا گزارش پروژه آلفا رو ارسال کنید.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="p-3 border-t border-gray-200 dark:border-gray-800 flex-shrink-0">
+                                <input type="text" placeholder="پیام خود را تایپ کنید..." class="w-full py-2 px-3 bg-gray-100 dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-lg text-sm">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div> <!-- انتهای Container محتوای صفحات -->
+        </main>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            
+            // --- عناصر اصلی ---
+            const loginView = document.getElementById('loginView');
+            const mainAppView = document.getElementById('mainAppView');
+            const loginButtons = document.querySelectorAll('.login-btn');
+            const sidebarNav = document.getElementById('sidebarNav');
+            const sidebarLinks = sidebarNav.querySelectorAll('.sidebar-link, [data-target="profileView"]');
+            const pageContentContainer = document.getElementById('pageContentContainer');
+            const allPageViews = pageContentContainer.querySelectorAll('.page-view');
+            const pageTitle = document.getElementById('pageTitle');
+            const welcomeMessage = document.getElementById('welcomeMessage'); // جدید
+            const logoutButton = document.getElementById('logoutButton');
+            const sidebarLogoutButton = document.getElementById('sidebarLogoutButton'); // جدید
+            
+            // --- عناصر پروفایل (برای به‌روزرسانی) ---
+            const profileImg = document.getElementById('profileImg');
+            const profileName = document.getElementById('profileName');
+            const profileRole = document.getElementById('profileRole');
+            const profileImgLarge = document.getElementById('profileImgLarge');
+            const profileNameLarge = document.getElementById('profileNameLarge');
+            const profileRoleLarge = document.getElementById('profileRoleLarge');
+            const profileEmail = document.getElementById('profileEmail');
+            const chatProfileName = document.getElementById('chatProfileName');
+
+            // --- مدیریت حالت تاریک ---
+            const themeToggleBtn = document.getElementById('theme-toggle');
+            const darkIcon = document.getElementById('theme-toggle-dark-icon');
+            const lightIcon = document.getElementById('theme-toggle-light-icon');
+            let isDarkMode = false;
+            
+            function updateTheme(dark) {
+                isDarkMode = dark;
+                if (dark) {
+                    document.documentElement.classList.add('dark');
+                    lightIcon.classList.remove('hidden');
+                    darkIcon.classList.add('hidden');
+                    localStorage.setItem('color-theme', 'dark');
+                } else {
+                    document.documentElement.classList.remove('dark');
+                    darkIcon.classList.remove('hidden');
+                    lightIcon.classList.add('hidden');
+                    localStorage.setItem('color-theme', 'light');
+                }
+                updateActiveLinkStyles();
+                updateAllChartsTheme();
+            }
+
+            themeToggleBtn.addEventListener('click', () => {
+                updateTheme(!document.documentElement.classList.contains('dark'));
+            });
+            
+            // --- مدیریت ناوبری (Navigation) ---
+            
+            // تابع نمایش صفحه
+            function navigateTo(targetId, linkElement) {
+                // مخفی کردن همه صفحات
+                allPageViews.forEach(view => view.classList.add('hidden'));
+                
+                // نمایش صفحه هدف
+                const targetView = document.getElementById(targetId);
+                if (targetView) {
+                    targetView.classList.remove('hidden');
+                }
+                
+                // به‌روزرسانی عنوان صفحه
+                pageTitle.textContent = linkElement.querySelector('span') ? linkElement.querySelector('span').textContent : 'پروفایل کاربری';
+                
+                // به‌روزرسانی استایل لینک فعال
+                sidebarLinks.forEach(link => {
+                    link.classList.remove('active', 'active-light');
+                });
+                
+                linkElement.classList.add(isDarkMode ? 'active' : 'active-light');
+
+                // رندر کردن نمودارهای مورد نیاز برای این صفحه (فقط یک بار)
+                if (targetId === 'dashboardContent' && !window.chartsInitialized.dashboard) {
+                    initDashboardCharts();
+                    window.chartsInitialized.dashboard = true;
+                } else if (targetId === 'reportingView' && !window.chartsInitialized.reports) {
+                    initReportsCharts();
+                    window.chartsInitialized.reports = true;
+                } else if (targetId === 'goalsView' && !window.chartsInitialized.goals) {
+                    initGoalsCharts();
+                    window.chartsInitialized.goals = true;
+                } else if (targetId === 'trainingView' && !window.chartsInitialized.learning) {
+                    initLearningCharts();
+                    window.chartsInitialized.learning = true;
+                } else if (targetId === 'productivityView' && !window.chartsInitialized.productivity) { // جدید
+                    initProductivityCharts();
+                    window.chartsInitialized.productivity = true;
+                }
+            }
+            
+            function updateActiveLinkStyles() {
+                const activeLink = sidebarNav.querySelector('.active, .active-light');
+                if (activeLink) {
+                    if (isDarkMode) {
+                        activeLink.classList.add('active');
+                        activeLink.classList.remove('active-light');
+                    } else {
+                        activeLink.classList.remove('active');
+                        activeLink.classList.add('active-light');
+                    }
+                }
+            }
+
+            sidebarLinks.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const targetId = link.getAttribute('data-target');
+                    navigateTo(targetId, link);
+                });
+            });
+
+            // --- مدیریت ورود (Login) ---
+            loginButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const role = button.getAttribute('data-role');
+                    login(role);
+                });
+            });
+            
+            function login(role) {
+                window.currentUserRole = role; // ذخیره نقش کاربر
+                
+                loginView.classList.add('hidden');
+                mainAppView.classList.add('flex');
+                mainAppView.classList.remove('hidden');
+                
+                setupDashboard(role);
+                
+                // ناوبری به داشبورد اصلی پس از ورود
+                const dashboardLink = sidebarNav.querySelector('[data-target="dashboardContent"]');
+                navigateTo('dashboardContent', dashboardLink);
+            }
+            
+            // --- مدیریت خروج (Logout) ---
+            function logout() {
+                mainAppView.classList.add('hidden');
+                mainAppView.classList.remove('flex');
+                loginView.classList.remove('hidden');
+                window.currentUserRole = null;
+                // حذف نمودارهای قبلی
+                Object.values(window.appCharts).forEach(chart => {
+                    if(chart) chart.destroy();
+                });
+                window.appCharts = {};
+                window.chartsInitialized = { dashboard: false, reports: false, goals: false, learning: false, productivity: false };
+            }
+
+            logoutButton.addEventListener('click', logout);
+            sidebarLogoutButton.addEventListener('click', logout); // لیسنر جدید
+
+            // --- تنظیم داشبورد بر اساس نقش ---
+            function setupDashboard(role) {
+                const isAdmin = (role === 'admin');
+                
+                // به‌روزرسانی پروفایل
+                const user = isAdmin ? 
+                    { name: 'دکتر رضایی', role: 'مدیر ارشد', email: 'a.rezaei@example.com', img: 'https://placehold.co/100x100/0d9488/FFFFFF?text=DR' } :
+                    { name: 'خانم محمدی', role: 'کارشناس', email: 'm.mohammadi@example.com', img: 'https://placehold.co/100x100/1e40af/FFFFFF?text=MM' };
+                
+                profileImg.src = user.img;
+                profileName.textContent = user.name;
+                profileRole.textContent = user.role;
+                profileImgLarge.src = user.img;
+                profileNameLarge.textContent = user.name;
+                profileRoleLarge.textContent = user.role;
+                profileEmail.value = user.email;
+                chatProfileName.textContent = user.name;
+                
+                // تنظیم پیام خوشامدگویی
+                welcomeMessage.textContent = isAdmin ? 
+                    `پنل مدیر ارشد، جناب ${user.name} خوش آمدید` : 
+                    `پنل کارمندی، ${user.name} خوش آمدید`;
+
+                // نمایش/مخفی کردن بخش‌های مدیر/کارمند در *سراسر* اپلیکیشن
+                document.querySelectorAll('.admin-view').forEach(el => el.classList.toggle('hidden', !isAdmin));
+                document.querySelectorAll('.employee-view').forEach(el => el.classList.toggle('hidden', isAdmin));
+            }
+
+            // --- راه‌اندازی نمودارها (Chart.js) ---
+            window.chartsInitialized = { dashboard: false, reports: false, goals: false, learning: false, productivity: false }; // 'productivity' اضافه شد
+            window.appCharts = {}; // مخزن نمودارها
+            
+            function getChartColors() {
+                const dark = document.documentElement.classList.contains('dark');
+                return {
+                    gridColor: dark ? 'rgba(255, 255, 255, 0.05)' : 'rgba(0, 0, 0, 0.05)',
+                    labelColor: dark ? '#9ca3af' : '#374151',
+                    highlightColor: '#14b8a6',
+                    baseColor: '#3b82f6',
+                    dangerColor: '#ef4444',
+                };
+            }
+            
+            function updateAllChartsTheme() {
+                const colors = getChartColors();
+                Object.values(window.appCharts).forEach(chart => {
+                    if (chart) {
+                        // Check if scales exist (Pie/Doughnut charts don't have them)
+                        if (chart.options.scales && chart.options.scales.x) {
+                            chart.options.scales.x.ticks.color = colors.labelColor;
+                            chart.options.scales.x.grid.color = colors.gridColor;
+                        }
+                        if (chart.options.scales && chart.options.scales.y) {
+                            chart.options.scales.y.ticks.color = colors.labelColor;
+                            chart.options.scales.y.grid.color = colors.gridColor;
+                        }
+
+                        if (chart.options.plugins.legend) {
+                            chart.options.plugins.legend.labels.color = colors.labelColor;
+                        }
+                        chart.update();
+                    }
+                });
+            }
+
+            // 1. نمودارهای داشبورد
+            function initDashboardCharts() {
+                const colors = getChartColors();
+                
+                // Admin: Trend
+                const ctxAdminTrend = document.getElementById('adminTrendChart')?.getContext('2d');
+                if (ctxAdminTrend) {
+                    window.appCharts.adminTrend = new Chart(ctxAdminTrend, {
+                        type: 'line',
+                        data: {
+                            labels: ['فروردین', 'اردیبهشت', 'خرداد', 'تیر', 'مرداد', 'شهریور'],
+                            datasets: [{
+                                label: 'بهره‌وری', data: [65, 70, 75, 72, 80, 82],
+                                borderColor: colors.highlightColor, tension: 0.3, fill: false
+                            }]
+                        },
+                        options: {
+                            responsive: true, maintainAspectRatio: false,
+                            plugins: { legend: { display: false } },
+                            scales: {
+                                x: { ticks: { color: colors.labelColor }, grid: { color: colors.gridColor, drawOnChartArea: false } },
+                                y: { ticks: { color: colors.labelColor }, grid: { color: colors.gridColor } }
+                            }
+                        }
+                    });
+                }
+                
+                // Admin: Projects Pie
+                const ctxAdminProjects = document.getElementById('adminProjectsChart')?.getContext('2d');
+                if (ctxAdminProjects) {
+                    window.appCharts.adminProjects = new Chart(ctxAdminProjects, {
+                        type: 'pie',
+                        data: {
+                            labels: ['تکمیل شده', 'در حال اجرا', 'تاخیر خورده'],
+                            datasets: [{
+                                data: [8, 14, 3],
+                                backgroundColor: [colors.highlightColor, colors.baseColor, colors.dangerColor],
+                                borderWidth: 0,
+                            }]
+                        },
+                        options: {
+                            responsive: true, maintainAspectRatio: false,
+                            plugins: { legend: { position: 'bottom', align: 'center', labels: { color: colors.labelColor, usePointStyle: true, boxWidth: 6, padding: 10 } } }
+                        }
+                    });
+                }
+                
+                // Employee: Progress Doughnut
+                const ctxEmployeeProgress = document.getElementById('employeeProgressChart')?.getContext('2d');
+                if (ctxEmployeeProgress) {
+                    window.appCharts.employeeProgress = new Chart(ctxEmployeeProgress, {
+                        type: 'doughnut',
+                        data: {
+                            labels: ['تکمیل شده', 'باقی‌مانده'],
+                            datasets: [{
+                                data: [78, 22],
+                                backgroundColor: [colors.highlightColor, '#e5e7eb'],
+                                darkBackgroundColor: [colors.highlightColor, '#374151'], // For dark mode logic
+                                borderWidth: 0,
+                            }]
+                        },
+                        options: {
+                            responsive: true, maintainAspectRatio: false, cutout: '75%',
+                            plugins: { legend: { display: false } }
+                        }
+                    });
+                }
+            }
+
+            // 2. نمودارهای گزارش‌ها
+            function initReportsCharts() {
+                const colors = getChartColors();
+                
+                // Admin: Team Prod Bar
+                const ctxReportTeamProd = document.getElementById('reportTeamProdChart')?.getContext('2d');
+                if (ctxReportTeamProd) {
+                    window.appCharts.reportTeamProd = new Chart(ctxReportTeamProd, {
+                        type: 'bar',
+                        data: {
+                            labels: ['R&D', 'پشتیبانی', 'طراحی', 'مالی'],
+                            datasets: [{
+                                label: 'بهره‌وری',
+                                data: [95, 65, 88, 75],
+                                backgroundColor: [colors.highlightColor, colors.dangerColor, colors.baseColor, colors.baseColor],
+                                borderRadius: 4,
+                            }]
+                        },
+                        options: {
+                            responsive: true, maintainAspectRatio: false,
+                            plugins: { legend: { display: false } },
+                            scales: {
+                                x: { ticks: { color: colors.labelColor }, grid: { display: false } },
+                                y: { ticks: { color: colors.labelColor }, grid: { color: colors.gridColor } }
+                            }
+                        }
+                    });
+                }
+                
+                // Employee: Activity
+                const ctxReportEmployeeActivity = document.getElementById('reportEmployeeActivityChart')?.getContext('2d');
+                if (ctxReportEmployeeActivity) {
+                    window.appCharts.reportEmployeeActivity = new Chart(ctxReportEmployeeActivity, {
+                        type: 'line',
+                        data: {
+                            labels: ['هفته ۱', 'هفته ۲', 'هفته ۳', 'هفته ۴'],
+                            datasets: [{
+                                label: 'تسک‌های انجام شده',
+                                data: [15, 20, 18, 22],
+                                borderColor: colors.highlightColor,
+                                tension: 0.3,
+                            }]
+                        },
+                        options: {
+                            responsive: true, maintainAspectRatio: false,
+                            plugins: { legend: { display: false } },
+                            scales: {
+                                x: { ticks: { color: colors.labelColor }, grid: { display: false } },
+                                y: { ticks: { color: colors.labelColor }, grid: { color: colors.gridColor } }
+                            }
+                        }
+                    });
+                }
+            }
+            
+            // 3. نمودارهای اهداف
+            function initGoalsCharts() {
+                const colors = getChartColors();
+                const ctxAdminGoals = document.getElementById('adminGoalsChart')?.getContext('2d');
+                if (ctxAdminGoals) {
+                    window.appCharts.adminGoals = new Chart(ctxAdminGoals, {
+                        type: 'bar',
+                        data: {
+                            labels: ['R&D', 'پشتیبانی', 'طراحی', 'مالی'],
+                            datasets: [{
+                                label: 'نرخ تکمیل',
+                                data: [80, 50, 75, 90],
+                                backgroundColor: colors.highlightColor,
+                                borderRadius: 4,
+                            }]
+                        },
+                        options: {
+                            responsive: true, maintainAspectRatio: false,
+                            plugins: { legend: { display: false } },
+                            scales: {
+                                x: { ticks: { color: colors.labelColor }, grid: { display: false } },
+                                y: { ticks: { color: colors.labelColor }, grid: { color: colors.gridColor } }
+                            }
+                        }
+                    });
+                }
+            }
+
+            // 4. نمودارهای آموزش
+            function initLearningCharts() {
+                const colors = getChartColors();
+                const ctxLearning = document.getElementById('learningParticipationChart')?.getContext('2d');
+                if (ctxLearning) {
+                    window.appCharts.learning = new Chart(ctxLearning, {
+                        type: 'bar',
+                        data: {
+                            labels: ['R&D', 'پشتیبانی', 'طراحی', 'مالی'],
+                            datasets: [{
+                                label: 'مشارکت',
+                                data: [60, 85, 40, 90],
+                                backgroundColor: colors.baseColor,
+                                borderRadius: 4,
+                            }]
+                        },
+                        options: {
+                            responsive: true, maintainAspectRatio: false, indexAxis: 'y',
+                            plugins: { legend: { display: false } },
+                            scales: {
+                                x: { ticks: { color: colors.labelColor }, grid: { color: colors.gridColor } },
+                                y: { ticks: { color: colors.labelColor }, grid: { display: false } }
+                            }
+                        }
+                    });
+                }
+            }
+
+            // 5. نمودارهای تحلیل بهره‌وری (جدید)
+            function initProductivityCharts() {
+                const colors = getChartColors();
+                
+                // Admin: Activity by Hour
+                const ctxActivityHour = document.getElementById('activityHourChart')?.getContext('2d');
+                if (ctxActivityHour) {
+                    window.appCharts.activityHour = new Chart(ctxActivityHour, {
+                        type: 'bar',
+                        data: {
+                            labels: ['08', '09', '10', '11', '12', '13', '14', '15', '16', '17'],
+                            datasets: [{
+                                label: 'سطح فعالیت',
+                                data: [30, 60, 85, 90, 70, 50, 65, 70, 40, 20],
+                                backgroundColor: colors.highlightColor,
+                                borderRadius: 4,
+                            }]
+                        },
+                        options: {
+                            responsive: true, maintainAspectRatio: false,
+                            plugins: { legend: { display: false } },
+                            scales: {
+                                x: { ticks: { color: colors.labelColor }, grid: { display: false } },
+                                y: { ticks: { color: colors.labelColor }, grid: { color: colors.gridColor } }
+                            }
+                        }
+                    });
+                }
+                
+                // Employee: Personal Activity
+                const ctxEmployeeActivity = document.getElementById('employeeActivityChart')?.getContext('2d');
+                if (ctxEmployeeActivity) {
+                    window.appCharts.employeeActivity = new Chart(ctxEmployeeActivity, {
+                        type: 'line',
+                        data: {
+                            labels: ['08', '09', '10', '11', '12', '13', '14', '15', '16', '17'],
+                            datasets: [{
+                                label: 'بهره‌وری شما',
+                                data: [40, 80, 95, 90, 60, 40, 70, 60, 30, 10],
+                                borderColor: colors.baseColor,
+                                tension: 0.3,
+                                fill: true,
+                                backgroundColor: 'rgba(59, 130, 246, 0.1)'
+                            }]
+                        },
+                        options: {
+                            responsive: true, maintainAspectRatio: false,
+                            plugins: { legend: { display: false } },
+                            scales: {
+                                x: { ticks: { color: colors.labelColor }, grid: { display: false } },
+                                y: { ticks: { color: colors.labelColor }, grid: { color: colors.gridColor } }
+                            }
+                        }
+                    });
+                }
+            }
+            
+            // --- راه‌اندازی اولیه ---
+            const initialThemeDark = localStorage.getItem('color-theme') === 'dark' || (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches);
+            updateTheme(initialThemeDark);
+
+        });
+    </script>
+
+</body>
+</html>
+
+
+
