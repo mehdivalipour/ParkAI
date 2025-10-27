@@ -107,16 +107,18 @@
         /* استایل نمودارها */
         canvas { max-height: 220px; } /* فشرده‌تر */
 
-        /* استایل منوی فعال سایدبار (تغییر به آبی) */
+        /* استایل منوی فعال سایدبار (تغییر به سبز) */
         .sidebar-link.active {
-            background-color: transparent;
-            color: var(--color-brand-primary);
-            font-weight: 700;
-            border-right: 3px solid var(--color-brand-primary);
-            padding-right: calc(1rem - 3px); /* 1rem - 3px border */
+            /* تغییر: از بردر آبی به پس‌زمینه سبز */
+            background-color: #15803d; /* green-700 (سبز سازمانی) */
+            color: #ffffff; /* فونت سفید */
+            font-weight: 700; /* بولد */
+            border-right: none; /* حذف بردر قبلی */
+            padding-right: 1rem; /* بازگرداندن پدینگ اصلی */
+            border-radius: 8px; /* گرد کردن گوشه‌ها */
         }
         .sidebar-link.active svg {
-            color: var(--color-brand-primary);
+            color: #ffffff; /* آیکون سفید */
         }
 
         /* (اصلاح باگ Heatmap) */
@@ -170,7 +172,7 @@
                         <path stroke-linecap="round" stroke-linejoin="round" d="M9 17.25v1.007a3 3 0 01-.879 2.122L7.5 21h9l-.621-.621A3 3 0 0115 18.257V17.25m6-12V15a2.25 2.25 0 01-2.25 2.25H5.25A2.25 2.25 0 013 15V5.25m18 0A2.25 2.25 0 0018.75 3H5.25A2.25 2.25 0 003 5.25m18 0V12a2.25 2.25 0 01-2.25 2.25H5.25A2.25 2.25 0 013 12V5.25" />
                     </svg>
                     <h2 class="text-lg font-bold text-gray-900 mt-2">دستیار هوشمند سازمانی</h2>
-                    <p class="text-xs text-gray-500 mt-1">ورود به پنل کاربری</p>
+                    <p class="text-xs text-gray-500 mt-1">پارک علم و فناوری آذربایجان غربی</p>
                 </div>
 
                 <form class="mt-6" onsubmit="event.preventDefault();">
@@ -214,6 +216,46 @@
             
             <!-- لیست منوها -->
             <nav id="sidebarNav" class="flex-1 overflow-y-auto py-4 space-y-1">
+                <!-- ماژول‌های تخصصی (منتقل شده به بالا) -->
+                <!-- START: جابجایی بلاک "اصلی" به بالا -->
+                <p class="px-4 text-xs font-semibold text-gray-400 uppercase tracking-wider">اصلی</p>
+                <!-- START: اصلاح لینک داشبورد برای تغییر متن -->
+                <a href="#" id="dashboard-link" class="sidebar-link active flex items-center px-4 py-2 text-sm font-medium text-gray-600 hover:text-brand-primary transition-colors" data-target="dashboardContent">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-3" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" /></svg>
+                    <span id="dashboard-link-text">داشبورد</span>
+                </a>
+                <!-- END: اصلاح لینک داشبورد -->
+                <a href="#" class="sidebar-link flex items-center px-4 py-2 text-sm font-medium text-gray-600 hover:text-brand-primary transition-colors" data-target="reportsContent">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-3" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2z" /></svg>
+                    گزارش‌ها
+                </a>
+                <a href="#" class="sidebar-link flex items-center px-4 py-2 text-sm font-medium text-gray-600 hover:text-brand-primary transition-colors" data-target="goalsContent">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-3" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg>
+                    اهداف و عملکرد
+                </a>
+                <!-- END: جابجایی بلاک "اصلی" -->
+                
+                <p class="px-4 pt-4 text-xs font-semibold text-gray-400 uppercase tracking-wider">ماژول‌های تخصصی</p>
+                <div class="space-y-1 pr-1 mb-4"> <!-- افزودن mb-4 برای جداسازی -->
+                    <!-- "نامه‌ساز هوشمند" از اینجا حذف شد -->
+                    <a href="#" class="sidebar-link flex items-center px-4 py-2 text-sm font-medium text-gray-600 hover:text-brand-primary transition-colors" data-target="productivityView">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-3 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 12h16.5m-16.5 3.75h16.5M3.75 19.5h16.5M5.625 4.5h12.75a1.875 1.875 0 010 3.75H5.625a1.875 1.875 0 010-3.75z" /></svg>
+                        تحلیل بهره‌وری
+                    </a>
+                    <a href="#" class="sidebar-link flex items-center px-4 py-2 text-sm font-medium text-gray-600 hover:text-brand-primary transition-colors" data-target="roadmapView">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-3 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M6.75 7.5l3 2.25-3 2.25m4.5 0h3m-9 8.25h13.5A2.25 2.25 0 0021 18V6a2.25 2.25 0 00-2.25-2.25H5.25A2.25 2.25 0 003 6v12a2.25 2.25 0 002.25 2.25z" /></svg>
+                        نقشه‌راه
+                    </a>
+                    <a href="#" class="sidebar-link flex items-center px-4 py-2 text-sm font-medium text-gray-600 hover:text-brand-primary transition-colors" data-target="processView">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-3 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M10.5 6h9.75M10.5 6a1.5 1.5 0 11-3 0m3 0a1.5 1.5 0 10-3 0M3.75 6H7.5m3 12h9.75m-9.75 0a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0M3.75 18H7.5m3-6h9.75m-9.75 0a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0M3.75 12H7.5" /></svg>
+                        بهینه‌سازی فرآیند
+                    </a>
+                    <!-- "پیام‌ساز هوشمند" از اینجا حذف شد -->
+                    <!-- "ترجمه هوشمند" از اینجا حذف شد -->
+                </div>
+
+                <!-- START: حذف بخش تکراری "اصلی" -->
+                <!-- 
                 <p class="px-4 text-xs font-semibold text-gray-400 uppercase tracking-wider">اصلی</p>
                 <a href="#" class="sidebar-link active flex items-center px-4 py-2 text-sm font-medium text-gray-600 hover:text-brand-primary transition-colors" data-target="dashboardContent">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-3" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" /></svg>
@@ -227,6 +269,8 @@
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-3" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg>
                     اهداف و عملکرد
                 </a>
+                 -->
+                <!-- END: حذف بخش تکراری -->
 
                 <p class="px-4 pt-4 text-xs font-semibold text-gray-400 uppercase tracking-wider">مدیریت</p>
                 <a href="#" class="sidebar-link flex items-center px-4 py-2 text-sm font-medium text-gray-600 hover:text-brand-primary transition-colors admin-only" data-target="teamContent">
@@ -248,39 +292,8 @@
                     آموزش هوشمند
                 </a>
                 
-                <!-- ماژول‌های تخصصی -->
-                <p class="px-4 pt-4 text-xs font-semibold text-gray-400 uppercase tracking-wider">ماژول‌های تخصصی</p>
-                <div class="space-y-1 pr-1">
-                    <a href="#" class="sidebar-link flex items-center px-4 py-2 text-sm font-medium text-gray-600 hover:text-brand-primary transition-colors" data-target="letterMakerContent">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-3 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" /></svg>
-                        نامه‌ساز هوشمند
-                    </a>
-                    <a href="#" class="sidebar-link flex items-center px-4 py-2 text-sm font-medium text-gray-600 hover:text-brand-primary transition-colors" data-target="proposalMakerContent">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-3 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m3.75 9v6m-3-3h6M12 15v6m-6-6v6m0-6H5.25A2.25 2.25 0 013 12.75V5.25A2.25 2.25 0 015.25 3h4.5A2.25 2.25 0 0112 5.25v2.25" /></svg>
-                        پروپوزال‌ساز
-                    </a>
-                    <a href="#" class="sidebar-link flex items-center px-4 py-2 text-sm font-medium text-gray-600 hover:text-brand-primary transition-colors" data-target="productivityView">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-3 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 12h16.5m-16.5 3.75h16.5M3.75 19.5h16.5M5.625 4.5h12.75a1.875 1.875 0 010 3.75H5.625a1.875 1.875 0 010-3.75z" /></svg>
-                        تحلیل بهره‌وری
-                    </a>
-                    <a href="#" class="sidebar-link flex items-center px-4 py-2 text-sm font-medium text-gray-600 hover:text-brand-primary transition-colors" data-target="roadmapView">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-3 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M6.75 7.5l3 2.25-3 2.25m4.5 0h3m-9 8.25h13.5A2.25 2.25 0 0021 18V6a2.25 2.25 0 00-2.25-2.25H5.25A2.25 2.25 0 003 6v12a2.25 2.25 0 002.25 2.25z" /></svg>
-                        نقشه‌راه
-                    </a>
-                    <a href="#" class="sidebar-link flex items-center px-4 py-2 text-sm font-medium text-gray-600 hover:text-brand-primary transition-colors" data-target="processView">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-3 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M10.5 6h9.75M10.5 6a1.5 1.5 0 11-3 0m3 0a1.5 1.5 0 10-3 0M3.75 6H7.5m3 12h9.75m-9.75 0a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0M3.75 18H7.5m3-6h9.75m-9.75 0a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0M3.75 12H7.5" /></svg>
-                        بهینه‌سازی فرآیند
-                    </a>
-                    <a href="#" class="sidebar-link flex items-center px-4 py-2 text-sm font-medium text-gray-600 hover:text-brand-primary transition-colors" data-target="messageMakerView">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-3 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M7.5 8.25h9m-9 3H12m-9.75 1.51c0 1.6 1.123 2.994 2.707 3.227 1.129.166 2.27.293 3.423.379.35.026.67.21.865.501L12 21l2.755-2.138a.5.5 0 01.865-.501 48.172 48.172 0 003.423-.379C19.877 17.754 21 16.31 21 14.71v-5.592A2.25 2.25 0 0018.75 6.75H5.25A2.25 2.25 0 003 9.118v5.592z" /></svg>
-                        پیام‌ساز هوشمند
-                    </a>
-                    <a href="#" class="sidebar-link flex items-center px-4 py-2 text-sm font-medium text-gray-600 hover:text-brand-primary transition-colors" data-target="translateView">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-3 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M10.5 21l5.25-11.25L21 21m-9-3h7.5M3 5.621a48.474 48.474 0 016-.371m0 0c1.12 0 2.233.038 3.334.114M9 5.25V3m3.334 2.364C11.176 10.658 7.69 15.08 3 17.502m9.334-12.138c.896.061 1.785.147 2.666.257m-4.589 8.495a18.023 18.023 0 01-3.827-5.802" /></svg>
-                        ترجمه هوشمند
-                    </a>
-                </div>
-
+                <!-- ماژول‌های تخصصی (حذف از اینجا) -->
+                
                 <p class="px-4 pt-4 text-xs font-semibold text-gray-400 uppercase tracking-wider">سیستم</p>
                 <a href="#" class="sidebar-link flex items-center px-4 py-2 text-sm font-medium text-gray-600 hover:text-brand-primary transition-colors" data-target="settingsContent">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-3" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.096 2.572-1.065z" /><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
@@ -305,12 +318,7 @@
                         <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 6h9.75M10.5 6a1.5 1.5 0 11-3 0m3 0a1.5 1.5 0 10-3 0M3.75 6H7.5m3 12h9.75m-9.75 0a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0M3.75 18H7.5m3-6h9.75m-9.75 0a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0M3.75 12H7.5" />
                     </svg>
                 </button>
-                <!-- دکمه خروج -->
-                <button id="logoutButton" class="flex-shrink-0 p-2 mr-1 rounded-lg text-gray-500 hover:bg-red-100 hover:text-red-600 transition-colors" title="خروج">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15M15.75 9l-2.25-2.25m0 0l-2.25 2.25m2.25-2.25v7.5M21 12h-6.375" />
-                    </svg>
-                </button>
+                <!-- دکمه خروج (منتقل شد به هدر) -->
             </div>
         </aside>
 
@@ -347,8 +355,21 @@
                     <button class="p-2 rounded-lg bg-brand-card-light border border-gray-200 text-gray-500 hover:text-brand-primary">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" /></svg>
                     </button>
-                    <!-- دکمه دستیار صوتی -->
-                    <button class="p-2 rounded-lg bg-brand-primary text-white">
+                    
+                    <!-- START: دکمه پیام‌رسان سازمانی -->
+            <button onclick="event.preventDefault()" class="px-3 py-1.5 rounded-lg bg-gray-900 text-white text-xs font-semibold hover:bg-gray-700 transition-colors">
+                پیام رسان سازمانی
+            </button>
+            <!-- END: دکمه پیام‌رسان سازمانی -->
+            
+            <!-- START: دکمه خروج (جدید) -->
+            <button id="logoutButton" class="px-3 py-1.5 rounded-lg bg-red-600 text-white text-xs font-semibold hover:bg-red-700 transition-colors">
+                خروج
+            </button>
+            <!-- END: دکمه خروج -->
+            
+            <!-- دکمه دستیار صوتی -->
+            <button class="p-2 rounded-lg bg-brand-primary text-white">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z" />
                         </svg>
@@ -368,6 +389,64 @@
                     <!--          شروع بازطراحی داشبورد مدیر ارشد         -->
                     <!-- ################################################## -->
                     <div class="admin-view space-y-4">
+
+                        <!-- START: ایجاد گرید برای کارت‌های ماژول -->
+                        <!-- تغییر: گرید 2 ستونه به 4 ستونه -->
+                        <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                            <!-- START: تغییر استایل کارت نامه‌ساز به مشکی/سفید -->
+                            <a href="#" class="sidebar-link bg-gray-900 p-4 rounded-lg border border-gray-700 flex items-center justify-between transition-all hover:shadow-lg hover:bg-gray-700" data-target="letterMakerContent">
+                                <div class="flex items-center">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 ml-3 text-white" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" /></svg>
+                                    <div>
+                                        <h3 class="font-semibold text-white">نامه‌ساز هوشمند</h3>
+                                        <p class="text-xs text-gray-300">تولید نامه رسمی با لحن سازمانی.</p>
+                                    </div>
+                                </div>
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"></path></svg>
+                            </a>
+                            <!-- END: تغییر استایل -->
+
+                            <!-- START: افزودن کارت پروپوزال‌ساز هوشمند -->
+                            <a href="#" class="sidebar-link bg-brand-card-light p-4 rounded-lg border border-gray-200 flex items-center justify-between transition-all hover:shadow-lg hover:border-brand-primary" data-target="proposalMakerContent">
+                                <div class="flex items-center">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 ml-3 text-brand-primary" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m3.75 9v6m-3-3h6M12 15v6m-6-6v6m0-6H5.25A2.25 2.25 0 013 12.75V5.25A2.25 2.25 0 015.25 3h4.5A2.25 2.25 0 0112 5.25v2.25" /></svg>
+                                    <div>
+                                        <h3 class="font-semibold text-gray-900">پروپوزال‌ساز</h3>
+                                        <p class="text-xs text-gray-500">تولید پیشنهاد پروژه استاندارد.</p>
+                                    </div>
+                                </div>
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"></path></svg>
+                            </a>
+                            <!-- END: افزودن کارت -->
+                            
+                            <!-- START: افزودن کارت پیام‌ساز هوشمند -->
+                            <a href="#" class="sidebar-link bg-brand-card-light p-4 rounded-lg border border-gray-200 flex items-center justify-between transition-all hover:shadow-lg hover:border-brand-primary" data-target="messageMakerView">
+                                <div class="flex items-center">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 ml-3 text-brand-primary" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M7.5 8.25h9m-9 3H12m-9.75 1.51c0 1.6 1.123 2.994 2.707 3.227 1.129.166 2.27.293 3.423.379.35.026.67.21.865.501L12 21l2.755-2.138a.5.5 0 01.865-.501 48.172 48.172 0 003.423-.379C19.877 17.754 21 16.31 21 14.71v-5.592A2.25 2.25 0 0018.75 6.75H5.25A2.25 2.25 0 003 9.118v5.592z" /></svg>
+                                    <div>
+                                        <h3 class="font-semibold text-gray-900">پیام‌ساز هوشمند</h3>
+                                        <p class="text-xs text-gray-500">تولید پیام‌های رسمی و اطلاع‌رسانی.</p>
+                                    </div>
+                                </div>
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"></path></svg>
+                            </a>
+                            <!-- END: افزودن کارت -->
+
+                            <!-- START: افزودن کارت ترجمه هوشمند -->
+                            <a href="#" class="sidebar-link bg-brand-card-light p-4 rounded-lg border border-gray-200 flex items-center justify-between transition-all hover:shadow-lg hover:border-brand-primary" data-target="translateView">
+                                <div class="flex items-center">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 ml-3 text-brand-primary" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M10.5 21l5.25-11.25L21 21m-9-3h7.5M3 5.621a48.474 48.474 0 016-.371m0 0c1.12 0 2.233.038 3.334.114M9 5.25V3m3.334 2.364C11.176 10.658 7.69 15.08 3 17.502m9.334-12.138c.896.061 1.785.147 2.666.257m-4.589 8.495a18.023 18.023 0 01-3.827-5.802" /></svg>
+                                    <div>
+                                        <h3 class="font-semibold text-gray-900">ترجمه هوشمند</h3>
+                                        <p class="text-xs text-gray-500">ترجمه متن و تصویر (OCR).</p>
+                                    </div>
+                                </div>
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"></path></svg>
+                            </a>
+                            <!-- END: افزودن کارت -->
+                        </div>
+                        <!-- END: گرید کارت‌های ماژول -->
+
 
                         <!-- بخش 1: کارت‌های KPI (فشرده) -->
                         <div class="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 xl:grid-cols-11 gap-3">
@@ -435,19 +514,53 @@
                             <!-- ستون 1 (اصلی - Span 3) -->
                             <div class="lg:col-span-3 space-y-4">
                                 
-                                <!-- ردیف اول (بخش 6: خلاصه روز AI) - منتقل شده به بالا -->
-                                <div class="ai-insight-box bg-brand-card-light p-4 rounded-lg border-t-4 border-brand-primary fade-in">
-                                    <h3 class="font-semibold text-sm mb-2 text-brand-primary">خلاصه‌ی امروز توسط هوش مصنوعی</h3>
-                                    <p class="text-sm text-gray-800 leading-relaxed">
-                                        📅 امروز ۵ پروژه در حال اجراست، تیم پشتیبانی نیاز به بازبینی دارد، و بهره‌وری کلی سازمان نسبت به دیروز ۴٪ کاهش یافته است.
-                                        پیشنهاد می‌شود تا عصر جلسه کوتاه انگیزشی برگزار شود.
-                                    </p>
-                                    <div class="flex gap-2 mt-4">
-                                        <button class="btn-highlight text-xs">✅ بله، متن جلسه را بساز</button>
-                                        <button class="btn-primary text-xs">📊 خلاصه تحلیلی بیشتر</button>
+                                <!-- START: انتقال دستیار هوشمند به اینجا -->
+                                <div class="bg-brand-card-light p-4 rounded-lg border border-gray-200">
+                                    <h3 class="font-semibold text-sm mb-3 text-brand-primary">دستیار هوشمند مدیریتی</h3>
+                                    <!-- تغییر: از space-y-3 عمودی به گرید افقی 4 ستونه -->
+                                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3">
+                                        
+                                        <!-- خلاصه روز (افزودن h-full و flex) -->
+                                        <div class="ai-insight-box text-xs p-3 h-full flex flex-col justify-between">
+                                            <div>
+                                                <p class="font-semibold text-gray-800">خلاصه‌ی امروز:</p>
+                                                <p class="mt-1">
+                                                    📅 امروز ۵ پروژه در حال اجراست، تیم پشتیبانی نیاز به بازبینی دارد، و بهره‌وری کلی سازمان نسبت به دیروز ۴٪ کاهش یافته است.
+                                                    پیشنهاد می‌شود تا عصر جلسه کوتاه انگیزشی برگزار شود.
+                                                </p>
+                                            </div>
+                                            <div class="flex gap-2 mt-2">
+                                                <button class="btn-highlight w-full text-xs" style="padding: 4px 8px;">✅ بله، متن جلسه را بساز</button>
+                                            </div>
+                                        </div>
+
+                                        <!-- AI Card 1 (افزودن h-full و flex) -->
+                                        <div class="ai-insight-box text-xs p-3 h-full flex flex-col justify-between">
+                                            <div>
+                                                <p class="font-semibold text-gray-800">گزارش هوشمند:</p>
+                                                <p class="mt-1">بهره‌وری تیم طراحی ۱۲٪ کاهش یافته. پیشنهاد جلسه بازبینی. آیا مایلید متن سخنرانی جلسه را آماده کنم؟</p>
+                                            </div>
+                                            <button class="btn-highlight w-full text-xs mt-2" style="padding: 4px 8px;">بله، آماده کن</button>
+                                        </div>
+                                        <!-- AI Card 2 (افزودن h-full و flex) -->
+                                        <div class="ai-insight-box text-xs p-3 h-full flex flex-col justify-between">
+                                            <div>
+                                                <p class="font-semibold text-gray-800">پیشنهاد تصمیم:</p>
+                                                <p class="mt-1">پروژه‌ی «آذرنو» در مرحله حساس است. پیشنهاد تخصیص ۲ نیروی جدید از تیم توسعه.</p>
+                                            </div>
+                                            <button class="btn-primary w-full text-xs mt-2" style="padding: 4px 8px;">درخواست انتقال نیرو</button>
+                                        </div>
+                                        <!-- AI Card 3 (افزودن h-full و flex) -->
+                                        <div class="ai-insight-box text-xs p-3 h-full flex flex-col justify-between">
+                                            <div>
+                                                <p class="font-semibold text-gray-800">تحلیل رفتاری:</p>
+                                                <p class="mt-1">کارمندان پشتیبانی در بازه‌ی ۱۴ تا ۱۶ عملکرد بالاتری دارند. جلسات آموزشی در صبح برگزار شود.</p>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                                
+                                <!-- END: انتقال -->
+
                                 <!-- ردیف دوم ستون اصلی (نمودارهای بزرگ) -->
                                 <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
                                     <!-- نمودار خطی بهره‌وری -->
@@ -552,28 +665,35 @@
                             <div class="lg:col-span-1 space-y-4">
                                 
                                 <!-- بخش 4: دستیار هوشمند -->
+                                <!-- START: حذف دستیار هوشمند از اینجا -->
+                                <!-- 
                                 <div class="bg-brand-card-light p-4 rounded-lg border border-gray-200">
                                     <h3 class="font-semibold text-sm mb-3 text-brand-primary">دستیار هوشمند مدیریتی</h3>
                                     <div class="space-y-3 max-h-[350px] overflow-y-auto pr-1">
-                                        <!-- AI Card 1 -->
+                                        
+                                        <div class="ai-insight-box text-xs p-3">
+                                            <p class="font-semibold text-gray-800">خلاصه‌ی امروز:</p>
+                                            ...
+                                        </div>
+
                                         <div class="ai-insight-box text-xs p-3">
                                             <p class="font-semibold text-gray-800">گزارش هوش مصنوعی:</p>
-                                            <p class="mt-1">بهره‌وری تیم طراحی ۱۲٪ کاهش یافته. پیشنهاد جلسه بازبینی. آیا مایلید متن سخنرانی جلسه را آماده کنم؟</p>
-                                            <button class="btn-highlight w-full text-xs mt-2" style="padding: 4px 8px;">بله، آماده کن</button>
+                                            ...
                                         </div>
-                                        <!-- AI Card 2 -->
+                                        
                                         <div class="ai-insight-box text-xs p-3">
                                             <p class="font-semibold text-gray-800">پیشنهاد تصمیم:</p>
-                                            <p class="mt-1">پروژه‌ی «آذرنو» در مرحله حساس است. پیشنهاد تخصیص ۲ نیروی جدید از تیم توسعه.</p>
-                                            <button class="btn-primary w-full text-xs mt-2" style="padding: 4px 8px;">درخواست انتقال نیرو</button>
+                                            ...
                                         </div>
-                                        <!-- AI Card 3 -->
+                                        
                                         <div class="ai-insight-box text-xs p-3">
                                             <p class="font-semibold text-gray-800">تحلیل رفتاری:</p>
-                                            <p class="mt-1">کارمندان پشتیبانی در بازه‌ی ۱۴ تا ۱۶ عملکرد بالاتری دارند. جلسات آموزشی در صبح برگزار شود.</p>
+                                            ...
                                         </div>
                                     </div>
                                 </div>
+                                -->
+                                <!-- END: حذف -->
 
                                 <!-- نمودار میله‌ای عملکرد تیم‌ها (کوچک) -->
                                 <div class="bg-brand-card-light p-4 rounded-lg border border-gray-200">
@@ -618,64 +738,75 @@
                     <!-- ################################################## -->
 
                     
-                    <!-- Employee Dashboard View (داشبورد کارمند) -->
+                    <!-- Employee Dashboard View (داشبورد کارمند) - START: Trello-Style Redesign -->
                     <div class="employee-view space-y-5">
+                        
+                        <!-- AI Tip Box (Moved to top) -->
+                        <div class="ai-insight-box">
+                            <p class="text-sm font-semibold text-blue-800">نکته هوشمند</p>
+                            <p class="text-sm text-gray-700 mt-1">
+                                پیشنهاد: تسک «گزارش پذیرش» اولویت بالایی دارد. می‌توانید برای بخش تحلیل بازار آن، از ماژول «تحلیل بهره‌وری» (در صورت دسترسی) کمک بگیرید.
+                            </p>
+                        </div>
+
+                        <!-- Trello Board Grid -->
                         <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                            <!-- ستون اصلی کارمند -->
-                            <div class="md:col-span-2 space-y-4">
-                                <!-- لیست تسک‌ها -->
-                                <div class="bg-brand-card-light p-4 rounded-lg border border-gray-200">
-                                    <h3 class="font-semibold mb-3">تسک‌های امروز شما</h3>
-                                    <div class="space-y-3">
-                                        <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
-                                            <div>
-                                                <p class="font-medium text-gray-800">ارسال گزارش عملکرد روزانه</p>
-                                                <span class="text-xs text-gray-500">پروژه: داخلی</span>
-                                            </div>
-                                            <span class="text-xs font-semibold px-2 py-0.5 bg-green-100 text-green-700 rounded-full">انجام شد</span>
-                                        </div>
-                                        <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
-                                            <div>
-                                                <p class="font-medium text-gray-800">آپلود مستندات پروژه آذرنو</p>
-                                                <span class="text-xs text-gray-500">مهلت: امروز</span>
-                                            </div>
-                                            <span class="text-xs font-semibold px-2 py-0.5 bg-red-100 text-red-700 rounded-full">فوریت</span>
-                                        </div>
-                                        <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
-                                            <div>
-                                                <p class="font-medium text-gray-800">بررسی پیام‌های داخلی</p>
-                                                <span class="text-xs text-gray-500">۳ پیام خوانده نشده</span>
-                                            </div>
-                                            <span class="text-xs font-semibold px-2 py-0.5 bg-yellow-100 text-yellow-700 rounded-full">در حال انجام</span>
-                                        </div>
+                            
+                            <!-- ستون 1: برای انجام (To Do) -->
+                            <div class="bg-gray-100 rounded-lg p-3 border border-gray-200">
+                                <h3 class="font-semibold text-gray-800 mb-3 px-1">📝 برای انجام</h3>
+                                <div class="space-y-3">
+                                    <!-- Task Card -->
+                                    <div class="bg-brand-card-light rounded-lg p-3 shadow-sm border border-gray-200 cursor-pointer hover:shadow-md transition-shadow">
+                                        <p class="text-sm font-medium">آماده‌سازی گزارش پذیرش شرکت‌های دانش‌بنیان (فصل ۳)</p>
+                                        <span class="text-xs text-red-600 font-semibold mt-1 inline-block">فوریت: بالا</span>
+                                    </div>
+                                    <!-- Task Card -->
+                                    <div class="bg-brand-card-light rounded-lg p-3 shadow-sm border border-gray-200 cursor-pointer hover:shadow-md transition-shadow">
+                                        <p class="text-sm font-medium">پیگیری ایمیل‌های متقاضیان استقرار</p>
+                                    </div>
+                                    <!-- Task Card -->
+                                    <div class="bg-brand-card-light rounded-lg p-3 shadow-sm border border-gray-200 cursor-pointer hover:shadow-md transition-shadow">
+                                        <p class="text-sm font-medium">برنامه‌ریزی رویداد Demo Day ماه آینده</p>
+                                        <span class="text-xs text-gray-500 mt-1 inline-block">مهلت: تا آخر هفته</span>
                                     </div>
                                 </div>
-                                <!-- خلاصه دیروز -->
-                                <div class="bg-brand-card-light p-4 rounded-lg border border-gray-200">
-                                    <h3 class="font-semibold mb-2">خلاصه عملکرد دیروز</h3>
-                                    <p class="text-sm text-gray-600">
-                                        شما دیروز <strong>۷ ساعت و ۱۵ دقیقه</strong> فعال بودید و <strong>۴ تسک</strong> را به اتمام رساندید. بهره‌وری شما <strong>۸۹٪</strong> محاسبه شد.
-                                    </p>
+                            </div>
+
+                            <!-- ستون 2: در حال انجام (Doing) -->
+                            <div class="bg-gray-100 rounded-lg p-3 border border-gray-200">
+                                <h3 class="font-semibold text-gray-800 mb-3 px-1">🚀 در حال انجام</h3>
+                                <div class="space-y-3">
+                                    <!-- Task Card -->
+                                    <div class="bg-brand-card-light rounded-lg p-3 shadow-sm border border-gray-200 cursor-pointer hover:shadow-md transition-shadow">
+                                        <p class="text-sm font-medium">هماهنگی جلسه با مربیان (Mentors) پروژه آذرنو</p>
+                                        <span class="text-xs text-yellow-600 font-semibold mt-1 inline-block">در انتظار پاسخ</span>
+                                    </div>
+                                    <!-- Task Card -->
+                                    <div class="bg-brand-card-light rounded-lg p-3 shadow-sm border border-gray-200 cursor-pointer hover:shadow-md transition-shadow">
+                                        <p class="text-sm font-medium">بررسی پیش‌نویس قرارداد همکاری با شرکت «فناوران»</p>
+                                    </div>
                                 </div>
                             </div>
-                            <!-- ستون کناری کارمند -->
-                            <div class="space-y-4">
-                                <!-- نمودار پیشرفت شخصی -->
-                                <div class="bg-brand-card-light p-4 rounded-lg border border-gray-200 text-center">
-                                    <h3 class="font-semibold mb-3">پیشرفت اهداف ماهانه</h3>
-                                    <canvas id="employeeProgressChart" style="max-height: 150px;"></canvas>
-                                    <p class="text-lg font-bold mt-2">۷۸٪</p>
-                                </div>
-                                <!-- نکته هوشمند -->
-                                <div class="ai-insight-box">
-                                    <p class="text-sm font-semibold text-blue-800">نکته هوشمند</p>
-                                    <p class="text-sm text-gray-700 mt-1">
-                                        پیشنهاد: تسک «گزارش مالی» را به بعد از ظهر موکول کنید. تحلیل AI نشان می‌دهد تمرکز شما در آن ساعات بالاتر است.
-                                    </p>
+
+                            <!-- ستون 3: انجام شده (Done) -->
+                            <div class="bg-gray-100 rounded-lg p-3 border border-gray-200">
+                                <h3 class="font-semibold text-gray-800 mb-3 px-1">✅ انجام شده</h3>
+                                <div class="space-y-3">
+                                    <!-- Task Card -->
+                                    <div class="bg-brand-card-light rounded-lg p-3 shadow-sm border border-gray-200 opacity-70">
+                                        <p class="text-sm font-medium line-through">ارسال صورت‌جلسه کمیته ارزیابی</p>
+                                    </div>
+                                    <!-- Task Card -->
+                                    <div class="bg-brand-card-light rounded-lg p-3 shadow-sm border border-gray-200 opacity-70">
+                                        <p class="text-sm font-medium line-through">آپلود مستندات پروژه ابرینو</p>
+                                    </div>
                                 </div>
                             </div>
+
                         </div>
                     </div>
+                    <!-- END: Trello-Style Redesign -->
                 </div> <!-- انتهای dashboardContent -->
                 
                 <!-- 2. محتوای گزارش‌ها -->
@@ -1194,7 +1325,7 @@
 
                 <!-- 12. نامه‌ساز هوشمند -->
                 <div id="letterMakerContent" class="page-view hidden space-y-5">
-                    <h3 class="font-semibold text-lg">نامه‌ساز هوشمند</h3>
+                    <!-- <h3 class="font-semibold text-lg">نامه‌ساز هوشمند</h3> (حذف شد به دلیل تکرار در هدر) -->
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <!-- فرم تولید -->
                         <div class="bg-brand-card-light p-6 rounded-lg border border-gray-200">
@@ -1202,7 +1333,11 @@
                             <div class="space-y-4">
                                 <div>
                                     <label class="text-xs font-medium">موضوع نامه (به زبان ساده):</label>
-                                    <input type="text" id="letterPrompt" class="w-full mt-1 text-sm p-2 rounded bg-gray-50 border border-gray-300" placeholder="مثال: درخواست مرخصی برای هفته آینده">
+                                    <input type="text" id="letterPrompt" class="w-full mt-1 text-sm p-2 rounded bg-gray-50 border border-gray-300" placeholder="مثال: دعوت از معاون وزیر برای بازدید از پارک">
+                                </div>
+                                <div>
+                                    <label class="text-xs font-medium">گیرنده:</label>
+                                    <input type="text" id="letterTo" class="w-full mt-1 text-sm p-2 rounded bg-gray-50 border border-gray-300" placeholder="مثال: دفتر معاونت علمی و فناوری">
                                 </div>
                                 <div>
                                     <label class="text-xs font-medium">گیرنده:</label>
@@ -1225,19 +1360,20 @@
                             <div id="letterOutput" class="p-4 bg-gray-50 rounded-lg min-h-[250px] text-sm leading-relaxed whitespace-pre-line border border-gray-200">
 بسمه تعالی
 
-موضوع: درخواست مرخصی
+موضوع: دعوتنامه رسمی جهت بازدید
 
-جناب آقای/سرکار خانم [نام مدیر]
-مدیریت محترم واحد [نام واحد]
+جناب آقای دکتر [نام گیرنده]
+معاون محترم [سمت گیرنده، مثلا: علمی و فناوری]
 
 با سلام و احترام،
-بدینوسیله به استحضار می‌رساند، اینجانب [نام شما]، کارشناس واحد [واحد شما]، قصد دارم از تاریخ [تاریخ شروع] لغایت [تاریخ پایان] به مدت [تعداد] روز از مرخصی استحقاقی خود استفاده نمایم.
-خواهشمند است در صورت موافقت، دستورات لازم را مبذول فرمایید.
+بدینوسیله، احترماً از حضرتعالی دعوت به عمل می‌آید تا جهت بازدید از آخرین دستاوردهای شرکت‌های دانش‌بنیان مستقر در پارک علم و فناوری و افتتاح مرکز نوآوری جدید، در این مجموعه حضور به هم رسانید.
 
-پیشاپیش از حسن توجه و مساعدت حضرتعالی کمال تشکر را دارم.
+حضور ارزشمند شما موجب دلگرمی و حمایت از اکوسیستم نوآوری کشور خواهد بود.
+
+پیشاپیش از حسن توجه شما سپاسگزارم.
 
 با تجدید احترام،
-[نام شما]
+[نام شما/مدیر ارشد]
 [تاریخ]
                             </div>
                             <button class="btn-primary text-xs mt-3">کپی متن</button>
@@ -1247,7 +1383,7 @@
 
                 <!-- 13. پروپوزال‌ساز -->
                 <div id="proposalMakerContent" class="page-view hidden space-y-5">
-                    <h3 class="font-semibold text-lg">پروپوزال‌ساز هوشمند</h3>
+                    <!-- <h3 class="font-semibold text-lg">پروپوزال‌ساز هوشمند</h3> (حذف شد به دلیل تکرار در هدر) -->
                     <div class="bg-brand-card-light p-6 rounded-lg border border-gray-200">
                         <div class="ai-insight-box mb-4">
                             <p class="text-sm font-semibold text-blue-800">دستیار پروپوزال</p>
@@ -1368,7 +1504,7 @@
 
                 <!-- 17. پیام‌ساز هوشمند -->
                 <div id="messageMakerView" class="page-view hidden space-y-5">
-                    <h3 class="font-semibold text-lg">پیام‌ساز و اطلاع‌رسانی هوشمند</h3>
+                    <!-- <h3 class="font-semibold text-lg">پیام‌ساز و اطلاع‌رسانی هوشمند</h3> (حذف شد به دلیل تکرار در هدر) -->
                     <div class="bg-brand-card-light p-6 rounded-lg border border-gray-200">
                         <h4 class="font-semibold mb-3">تولید پیام رسمی/داخلی</h4>
                         <div class="space-y-4">
@@ -1394,7 +1530,7 @@
 
                 <!-- 18. ترجمه هوشمند -->
                 <div id="translateView" class="page-view hidden space-y-5">
-                    <h3 class="font-semibold text-lg">ترجمه هوشمند (متن و تصویر)</h3>
+                    <!-- <h3 class="font-semibold text-lg">ترجمه هوشمند (متن و تصویر)</h3> (حذف شد به دلیل تکرار در هدر) -->
                     <div class="bg-brand-card-light p-6 rounded-lg border border-gray-200">
                         <div class="flex gap-4 items-center justify-center mb-4">
                             <button class="filter-btn text-sm px-4 active">ترجمه متن</button>
@@ -1450,12 +1586,18 @@
             
             // --- انتخابگرهای DOM (سایدبار و هدر) ---
             const sidebarNav = document.getElementById('sidebarNav');
-            const sidebarLinks = sidebarNav.querySelectorAll('.sidebar-link, [data-target="profileView"]');
+            // FIX: Select ALL navigation links, not just in sidebar
+            const navLinks = document.querySelectorAll('[data-target]');
             const pageContentContainer = document.getElementById('pageContentContainer');
             const pageViews = pageContentContainer.querySelectorAll('.page-view');
             const pageTitle = document.getElementById('pageTitle');
             const welcomeMessage = document.getElementById('welcomeMessage'); // جدید
             const logoutButton = document.getElementById('logoutButton');
+            
+            // START: افزودن انتخابگرهای لینک داشبورد
+            const dashboardLink = document.getElementById('dashboard-link');
+            const dashboardLinkText = document.getElementById('dashboard-link-text');
+            // END: افزودن انتخابگرها
             
             const headerDate = document.getElementById('headerDate'); // جدید
             const headerTime = document.getElementById('headerTime'); // جدید
@@ -1481,15 +1623,25 @@
                     targetView.classList.remove('hidden');
                     
                     // 3. به‌روزرسانی عنوان صفحه
-                    const targetLink = sidebarNav.querySelector(`[data-target="${targetId}"]`);
+                    // FIX: Find title from any navLink, not just sidebar
+                    const targetLink = document.querySelector(`[data-target="${targetId}"]`);
                     if (targetLink) {
-                        pageTitle.textContent = targetLink.textContent.trim();
+                        // Try to find text, skip SVG
+                        pageTitle.textContent = targetLink.textContent.trim().split('\n')[0] || "ماژول";
                     } else if (targetId === "dashboardContent") {
                         pageTitle.textContent = "داشبورد";
                     }
                     
                     // 4. به‌روزرسانی استایل لینک فعال
                     updateActiveLinkStyles(targetId);
+                    
+                    // START: منطق تغییر متن داشبورد
+                    if (targetId === 'dashboardContent') {
+                        if (dashboardLinkText) dashboardLinkText.textContent = "داشبورد";
+                    } else {
+                        if (dashboardLinkText) dashboardLinkText.textContent = "بازگشت به داشبورد";
+                    }
+                    // END: منطق تغییر متن داشبورد
                     
                     // 5. راه‌اندازی نمودارهای صفحه (فقط یک بار)
                     if (targetId === 'dashboardContent' && !window.chartsInitialized.dashboard) {
@@ -1521,17 +1673,33 @@
             }
             
             function updateActiveLinkStyles(targetId) {
-                sidebarLinks.forEach(link => {
-                    if (link.dataset.target === targetId) {
-                        link.classList.add('active');
+                // START: اصلاح منطق برای فعال نگه داشتن "بازگشت به داشبورد"
+                navLinks.forEach(link => {
+                    const linkTarget = link.dataset.target;
+                    
+                    if (targetId === 'dashboardContent') {
+                        // اگر در داشبورد هستیم، فقط داشبورد فعال است
+                        if (linkTarget === 'dashboardContent') {
+                            link.classList.add('active');
+                        } else {
+                            link.classList.remove('active');
+                        }
                     } else {
-                        link.classList.remove('active');
+                        // اگر در صفحه دیگری هستیم، هم آن صفحه و هم "بازگشت به داشبورد" فعال هستند
+                        if (linkTarget === targetId) {
+                            link.classList.add('active');
+                        } else if (linkTarget === 'dashboardContent') {
+                            link.classList.add('active'); // "بازگشت به داشبورد" را فعال کن
+                        } else {
+                            link.classList.remove('active');
+                        }
                     }
                 });
+                // END: اصلاح منطق
             }
 
-            // افزودن Event Listener به لینک‌های سایدبار
-            sidebarLinks.forEach(link => {
+            // افزودن Event Listener به تمام لینک‌های ناوبری
+            navLinks.forEach(link => {
                 link.addEventListener('click', (e) => {
                     e.preventDefault();
                     const targetId = e.currentTarget.dataset.target;
@@ -1558,7 +1726,8 @@
                 updateTime(); // شروع آپدیت ساعت و تاریخ
                 
                 // ناوبری به داشبورد اصلی پس از ورود
-                const dashboardLink = sidebarNav.querySelector('[data-target="dashboardContent"]');
+                // FIX: Find the main dashboard link (not necessarily in sidebar)
+                const dashboardLink = document.querySelector('[data-target="dashboardContent"]');
                 dashboardLink.click();
             }
 
@@ -1574,10 +1743,14 @@
                     if(chart) chart.destroy();
                 });
                 window.appCharts = {};
-                window.chartsInitialized = { dashboard: false, reports: false, goals: false, learning: false, productivity: false, gantt: false, teamPerf: false, contracts: false, radar: false, goalsProgress: false, trainingProgress: false };
+                window.chartsInitialized = { dashboard: false, reports: false, goals: false, learning: false, productivity: false, gantt: false, teamPerf: false, contracts: false, radar: false, goalsProgress: false, trainingProgress: false, team: false };
                 
                 // توقف آپدیت ساعت
                 if (window.timeInterval) clearInterval(window.timeInterval);
+                
+                // START: بازنشانی متن داشبورد هنگام خروج
+                if (dashboardLinkText) dashboardLinkText.textContent = 'داشبورد';
+                // END: بازنشانی متن
             }
 
             logoutButton.addEventListener('click', logout);
@@ -1660,6 +1833,8 @@
                 const colors = getChartColors();
                 
                 // --- نمودارهای کارمند ---
+                // START: حذف نمودار دایره‌ای پیشرفت کارمند (چون طرح داشبورد تغییر کرد)
+                /*
                 const ctxEmployeeProgress = document.getElementById('employeeProgressChart')?.getContext('2d');
                 if (ctxEmployeeProgress) {
                     if (window.appCharts.employeeProgress) window.appCharts.employeeProgress.destroy();
@@ -1679,6 +1854,8 @@
                         }
                     });
                 }
+                */
+                // END: حذف نمودار
                 
                 // --- نمودارهای مدیر ---
                 const ctxAdminTrend = document.getElementById('adminTrendChart')?.getContext('2d');
@@ -1728,22 +1905,7 @@
                 /*
                 const ctxAdminRadar = document.getElementById('adminRadarChart')?.getContext('2d');
                 if (ctxAdminRadar) {
-                    if (window.appCharts.adminRadar) window.appCharts.adminRadar.destroy();
-                    window.appCharts.adminRadar = new Chart(ctxAdminRadar, {
-                        type: 'radar',
-                        data: {
-                            labels: ['خلاقیت', 'دقت', 'سرعت', 'همکاری', 'رضایت'],
-                            datasets: [
-                                { label: 'فناوری', data: [9, 7, 8, 9, 8], backgroundColor: 'rgba(37, 99, 235, 0.2)', borderColor: colors.highlightColor, pointBackgroundColor: colors.highlightColor },
-                                { label: 'طراحی', data: [7, 8, 6, 7, 9], backgroundColor: 'rgba(107, 114, 128, 0.2)', borderColor: '#6b7280', pointBackgroundColor: '#6b7280' }
-                            ]
-                        },
-                        options: {
-                            responsive: true, maintainAspectRatio: false,
-                             plugins: { legend: { labels: { color: colors.labelColor } } },
-                             scales: { r: { pointLabels: { color: colors.labelColor }, grid: { color: colors.gridColor }, angleLines: { color: colors.gridColor } } }
-                        }
-                    });
+                    ...
                 }
                 */
                 /* END: حذف نمودار رادار */
@@ -2034,6 +2196,14 @@
 
 </body>
 </html>
+
+
+
+
+
+
+
+
 
 
 
